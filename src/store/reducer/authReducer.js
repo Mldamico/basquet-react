@@ -3,7 +3,7 @@ import { LOGIN, LOGOUT, REGISTER } from '../../constants/authTypes';
 export const authReducer = (state = {}, action) => {
   switch (action.type) {
     case LOGIN:
-      return {};
+      return { usuario: action.payload };
     case LOGOUT:
       return {};
     case REGISTER:
