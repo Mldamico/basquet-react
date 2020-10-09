@@ -1,5 +1,6 @@
 import React from 'react';
+import { Layout } from '../../components/Layout';
 
 export const RegisterScreen = () => {
-  return <div></div>;
+  return <Layout></Layout>;
 };
