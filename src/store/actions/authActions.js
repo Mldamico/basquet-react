@@ -7,6 +7,17 @@ export const login = (data) => {
       password: data.password,
     });
     console.log(resp);
+    localStorage.setItem('user', JSON.stringify(resp.data));
     dispatch({ type: LOGIN, payload: resp.data });
+  };
+};
+
+export const autoLogin = () => {
+  return (dispatch) => {
+    if (localStorage.getItem('user')) {
+      const data = localStorage.getItem('user');
+      const parsedData = JSON.parse(data);
+      dispatch({ type: LOGIN, payload: parsedData });
+    }
   };
 };
