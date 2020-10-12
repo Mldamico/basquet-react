@@ -11,7 +11,18 @@ const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
   compose;
 
+const userInfoFromStorage = localStorage.getItem('user')
+  ? JSON.parse(localStorage.getItem('user'))
+  : null;
+
+const isLogged = userInfoFromStorage ? true : false;
+
+const initialState = {
+  authReducer: { user: userInfoFromStorage, isLogged },
+};
+
 export const store = createStore(
   reducers,
+  initialState,
   composeEnhancers(applyMiddleware(thunk))
 );
