@@ -9,12 +9,12 @@ const RegisterStyles = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 85vh;
+  height: 100vh;
   fieldset {
     display: flex;
     padding-right: 2.5rem;
     flex-direction: column;
-    width: 40rem;
+    width: 45rem;
 
     input {
       width: 100%;
@@ -42,9 +42,11 @@ export const RegisterScreen = () => {
     username: '',
     password: '',
     confirmPassword: '',
-    dorsal: '',
+    dorsal: 0,
     nombre: '',
     apellido: '',
+    dni: 0,
+    fechaNacimiento: '',
   });
   const submitForm = (e) => {
     e.preventDefault();
@@ -59,6 +61,8 @@ export const RegisterScreen = () => {
     dorsal,
     nombre,
     apellido,
+    dni,
+    fechaNacimiento,
   } = values;
   return (
     <Layout>
@@ -111,6 +115,22 @@ export const RegisterScreen = () => {
             name='dorsal'
             id='dorsal'
             value={dorsal}
+            onChange={handleInputChange}
+          />
+          <label htmlFor='dni'>DNI</label>
+          <input
+            type='number'
+            name='dni'
+            id='dni'
+            value={dni}
+            onChange={handleInputChange}
+          />
+          <label htmlFor='fechaNacimiento'>Fecha de nacimiento</label>
+          <input
+            type='date'
+            name='fechaNacimiento'
+            id='fechaNacimiento'
+            value={fechaNacimiento}
             onChange={handleInputChange}
           />
           <div className='buttonContainer'>

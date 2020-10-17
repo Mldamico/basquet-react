@@ -12,7 +12,8 @@ const GlobalStyles = createGlobalStyle`
     font-size: 10px;
   }
   body {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    font-family: 'Open Sans', sans-serif;
   }
   fieldset {
     border-color: rgba(0,0,0,0.1);
