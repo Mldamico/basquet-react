@@ -18,6 +18,7 @@ export const login = (user) => {
       dispatch({ type: LOGIN, payload: data });
       localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
+      console.log(error);
       dispatch({
         type: AUTH_ERROR,
         payload:
