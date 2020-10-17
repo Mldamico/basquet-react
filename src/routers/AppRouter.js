@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { EstadisticasScreen } from '../pages/BasquetBapp/EstadisticasScreen';
 import { GestionJugadoresScreen } from '../pages/BasquetBapp/GestionJugadoresScreen';
 import { HomeScreen } from '../pages/BasquetBapp/HomeScreen';
+import { JugadasScreen } from '../pages/BasquetBapp/JugadasScreen';
 import { PizarraScreen } from '../pages/BasquetBapp/PizarraScreen';
 import { TomarDatosScreen } from '../pages/BasquetBapp/TomarDatosScreen';
 import { AuthRouter } from './AuthRouter';
@@ -22,7 +23,11 @@ export const AppRouter = () => {
             path='/auth'
             component={AuthRouter}
           />
-
+          <PrivateRoute
+            isAuthenticated={user}
+            path='/jugadas'
+            component={JugadasScreen}
+          />
           <PrivateRoute
             isAuthenticated={user}
             path='/pizarra'

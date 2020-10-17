@@ -35,7 +35,7 @@ export const Nav = () => {
     <NavStyles>
       <ul>
         <li>
-          <Link to='/pizarra'>Pizarra</Link>
+          <Link to='/jugadas'>Jugadas</Link>
         </li>
         <li>
           <Link to='/estadisticas'>Estadisticas</Link>
