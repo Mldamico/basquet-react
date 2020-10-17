@@ -1,13 +1,29 @@
-import { LOGIN, LOGOUT, REGISTER } from '../../constants/authTypes';
+import {
+  AUTH_ERROR,
+  AUTH_LOADING,
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+} from '../../constants/authTypes';
 
-export const authReducer = (state = {}, action) => {
+export const authReducer = (
+  state = { user: {}, loading: false, error: null },
+  action
+) => {
   switch (action.type) {
+    case AUTH_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
     case LOGIN:
-      return { user: action.payload, isLogged: true };
+      return { loading: false, user: action.payload };
     case LOGOUT:
-      return { user: {}, isLogged: false };
+      return { loading: false, user: {} };
     case REGISTER:
-      return {};
+      return { loading: false, user: action.payload };
+    case AUTH_ERROR:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

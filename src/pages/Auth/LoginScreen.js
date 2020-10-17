@@ -2,9 +2,17 @@ import React from 'react';
 import { Layout } from '../../components/Layout';
 import { useForm } from '../../hooks/useForm';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/actions/authActions';
 import { Link } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import { css } from '@emotion/core';
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 const LoginStyles = styled.form`
   display: flex;
   justify-content: center;
@@ -38,6 +46,7 @@ const LoginStyles = styled.form`
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
+  const { user, loading, error } = useSelector((state) => state.auth);
   const [values, handleInputChange] = useForm({
     username: '',
     password: '',
@@ -52,32 +61,41 @@ export const LoginScreen = () => {
   return (
     <Layout>
       <LoginStyles onSubmit={submitForm}>
-        <fieldset>
-          <legend>Login</legend>
-          <label htmlFor='username'>Usuario</label>
-          <input
-            type='text'
-            name='username'
-            id='username'
-            value={username}
-            onChange={handleInputChange}
+        {loading ? (
+          <PropagateLoader
+            css={override}
+            size={15}
+            color={'#FF4949'}
+            loading={loading}
           />
-          <label htmlFor='password'>Password</label>
-          <input
-            type='password'
-            name='password'
-            id='password'
-            value={password}
-            onChange={handleInputChange}
-          />
-          <div className='buttonContainer'>
-            <button className='btn' type='submit'>
-              Login
-            </button>
-          </div>
-          Necesita crear una cuenta?{' '}
-          <Link to='/auth/register'>Registrarse</Link>
-        </fieldset>
+        ) : (
+          <fieldset>
+            <legend>Login</legend>
+            <label htmlFor='username'>Usuario</label>
+            <input
+              type='text'
+              name='username'
+              id='username'
+              value={username}
+              onChange={handleInputChange}
+            />
+            <label htmlFor='password'>Password</label>
+            <input
+              type='password'
+              name='password'
+              id='password'
+              value={password}
+              onChange={handleInputChange}
+            />
+            <div className='buttonContainer'>
+              <button className='btn' type='submit'>
+                Login
+              </button>
+            </div>
+            Necesita crear una cuenta?
+            <Link to='/auth/register'>Registrarse</Link>
+          </fieldset>
+        )}
       </LoginStyles>
     </Layout>
   );
