@@ -7,7 +7,7 @@ import { PrivateRoute } from './PrivateRouter';
 import { PublicRoute } from './PublicRouter';
 
 export const AppRouter = () => {
-  const { user } = useSelector((state) => state.authReducer);
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <Router>

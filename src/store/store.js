@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { authReducer } from './reducer/authReducer';
 
 const reducers = combineReducers({
-  authReducer: authReducer,
+  auth: authReducer,
 });
 
 const composeEnhancers =
@@ -18,7 +18,7 @@ const userInfoFromStorage = localStorage.getItem('user')
 const isLogged = userInfoFromStorage ? true : false;
 
 const initialState = {
-  authReducer: { user: userInfoFromStorage, isLogged },
+  auth: { user: userInfoFromStorage, isLogged },
 };
 
 export const store = createStore(

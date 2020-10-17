@@ -4,7 +4,7 @@ import { useForm } from '../../hooks/useForm';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/actions/authActions';
-
+import { Link } from 'react-router-dom';
 const LoginStyles = styled.form`
   display: flex;
   justify-content: center;
@@ -38,7 +38,7 @@ const LoginStyles = styled.form`
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
-  const [values, handleInputChange, reset] = useForm({
+  const [values, handleInputChange] = useForm({
     username: '',
     password: '',
   });
@@ -71,13 +71,12 @@ export const LoginScreen = () => {
             onChange={handleInputChange}
           />
           <div className='buttonContainer'>
-            <button className='btn' onClick={reset}>
-              Reset
-            </button>
             <button className='btn' type='submit'>
               Login
             </button>
           </div>
+          Necesita crear una cuenta?{' '}
+          <Link to='/auth/register'>Registrarse</Link>
         </fieldset>
       </LoginStyles>
     </Layout>

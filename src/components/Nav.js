@@ -1,42 +1,55 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 const NavStyles = styled.nav`
-  background-color: var(--red);
-  display: flex;
-  align-items: center;
-
   h1 {
     margin-left: 2rem;
     color: var(--white);
   }
 
   ul {
-    margin-left: auto;
+    /* margin-left: auto; */
     list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--red);
+    margin: 0;
   }
 
   a {
     text-decoration: none;
-    color: var(--white);
     padding: 1rem;
+    color: var(--white);
+  }
+
+  img {
+    width: 100px;
   }
 `;
 
 export const Nav = () => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <NavStyles>
-      <div>
-        <h1>BasquetBapp</h1>
-      </div>
       <ul>
         <li>
-          <Link to='/'>Home</Link>
           <Link to='/pizarra'>Pizarra</Link>
+        </li>
+        <li>
           <Link to='/estadisticas'>Estadisticas</Link>
-          <Link to='/datos'>Tomar datos</Link>
-          <Link to='/gestion'>Gestion jugadores</Link>
+        </li>
+        <li>
+          <Link to='/home'>
+            <img src='/pelota.png' alt='Pelota de basquet' />
+          </Link>
+        </li>
+        <li>
+          <Link to='/datos'>Datos</Link>
+        </li>
+        <li>
+          <Link to='/gestion'>Gestion</Link>
         </li>
       </ul>
     </NavStyles>
