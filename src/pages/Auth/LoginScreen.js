@@ -7,6 +7,7 @@ import { login } from '../../store/actions/authActions';
 import { Link } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
 import { css } from '@emotion/core';
+import { Message } from '../../components/Message';
 
 const override = css`
   display: block;
@@ -92,8 +93,13 @@ export const LoginScreen = () => {
                 Login
               </button>
             </div>
-            Necesita crear una cuenta?
-            <Link to='/auth/register'>Registrarse</Link>
+            <p>
+              <span style={{ marginRight: '.5rem' }}>
+                Necesita crear una cuenta?
+              </span>
+              <Link to='/auth/register'>Registrarse</Link>
+            </p>
+            {error && <Message BackgroundColor='#d9534f'>{error}</Message>}
           </fieldset>
         )}
       </LoginStyles>

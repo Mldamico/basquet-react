@@ -7,6 +7,7 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #fff;
     --grey: #efefef;
+    --red-danger: #d9534f
   }
   html {
     font-size: 10px;
@@ -33,6 +34,14 @@ const GlobalStyles = createGlobalStyle`
     &:hover {
       --cast: 4px;
     }
+  }
+  a {
+    text-decoration: none;
+    color: var(----black);
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 
   /* Scrollbar Styles */
