@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '../../components/Layout';
 import styled from 'styled-components';
 import RecordRTC from 'recordrtc';
 import Draggable from 'react-draggable';
 const PizarraStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
 `;
 
 const jugadores = [
@@ -16,12 +15,25 @@ const jugadores = [
   { id: 5, posicion: 'Pivot', numero: 5, left: 410, top: 10 },
 ];
 export const PizarraScreen = () => {
+  const [deltaPosition, setDeltaPosition] = useState({ x: 0, y: 0 });
+  const handleEvent = (e, data) => {
+    const { x, y } = deltaPosition;
+    setDeltaPosition({ x: x + data.deltaX, y: y + data.deltaY });
+    console.log(x, y);
+    if (x > 120 && x < 200 && y > 20 && y < 110) {
+      console.log('Punto');
+    }
+  };
+
+  const handleStop = () => {
+    console.log('se Paro');
+  };
   return (
     <Layout>
       <PizarraStyled>
         <div
           style={{
-            backgroundImage: url(`cancha.png`),
+            backgroundImage: `url('cancha.png')`,
             width: 1200,
             height: 1000,
             position: 'relative',
@@ -38,13 +50,13 @@ export const PizarraScreen = () => {
               style={{
                 width: '5rem',
                 height: '5rem',
-
                 backgroundColor: '#fff',
                 position: 'absolute',
                 borderRadius: '50%',
                 content: '1',
                 lineHeight: '5rem',
                 textAlign: 'center',
+                cursor: 'pointer',
               }}
             >
               {jugador.posicion}
@@ -57,7 +69,7 @@ export const PizarraScreen = () => {
               width: '5rem',
               height: '5rem',
 
-              backgroundColor: '#fff',
+              backgroundColor: 'var(--yellow)',
               position: 'absolute',
               borderRadius: '50%',
               content: '1',
