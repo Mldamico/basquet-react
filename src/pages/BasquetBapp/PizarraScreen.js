@@ -15,6 +15,23 @@ const PizarraScreenStyles = styled.div`
 const FormStyle = styled.form`
   display: flex;
   flex-direction: column;
+  fieldset {
+    display: flex;
+    padding-right: 2.5rem;
+    flex-direction: column;
+    width: 40rem;
+
+    input {
+      width: 100%;
+      border-radius: 5px;
+      margin: 0.5rem 0;
+      padding: 0.5rem 0.5rem 1rem;
+      border: 0.5px solid var(--black);
+    }
+    div {
+      display: flex;
+    }
+  }
 `;
 
 export const PizarraScreen = () => {
@@ -108,114 +125,116 @@ export const PizarraScreen = () => {
         )}
 
         <FormStyle onSubmit={handleSubmit}>
-          <legend>Jugada</legend>
-          <h3>Puntos</h3>
-          <div>
-            <label htmlFor='doble'>Doble</label>
-            <input
-              id='doble'
-              type='radio'
-              name='puntos'
-              value={2}
-              onChange={handleSubmit}
-              checked
-            ></input>
-            <label htmlFor='triple'>Triple</label>
-            <input
-              id='triple'
-              type='radio'
-              name='puntos'
-              value={3}
-              onChange={handleSubmit}
-            ></input>
-          </div>
-          <h3>Jugador Tirador</h3>
-          <div>
-            <label htmlFor='Base_tirador'>B</label>
-            <input
-              id='Base_tirador'
-              type='radio'
-              name='tirador'
-              value='B'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='escolta_tirador'>E</label>
-            <input
-              id='escolta_tirador'
-              type='radio'
-              name='tirador'
-              value='E'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='alero_tirador'>A</label>
-            <input
-              id='alero_tirador'
-              type='radio'
-              name='tirador'
-              value='A'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='pivot_tirador'>P</label>
-            <input
-              id='pivot_tirador'
-              type='radio'
-              name='tirador'
-              value='P'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='alaPivot_tirador'>AP</label>
-            <input
-              id='alaPivot_tirador'
-              type='radio'
-              name='tirador'
-              value='AP'
-              onChange={handleSubmit}
-            ></input>
-          </div>
-          <h3>Jugador Asistente</h3>
-          <div>
-            <label htmlFor='base'>B</label>
-            <input
-              id='base'
-              type='radio'
-              name='asistente'
-              value='B'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='escolta'>E</label>
-            <input
-              id='escolta'
-              type='radio'
-              name='asistente'
-              value='E'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='alero'>A</label>
-            <input
-              id='alero'
-              type='radio'
-              name='asistente'
-              value='A'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='pivot'>P</label>
-            <input
-              id='pivot'
-              type='radio'
-              name='asistente'
-              value='P'
-              onChange={handleSubmit}
-            ></input>
-            <label htmlFor='alaPivot'>AP</label>
-            <input
-              id='alaPivot'
-              type='radio'
-              name='asistente'
-              value='AP'
-              onChange={handleSubmit}
-            ></input>
-          </div>
-          <button type='submit'>Agregar jugada</button>
+          <fieldset>
+            <legend>Jugada</legend>
+            <h3>Puntos</h3>
+            <div>
+              <label htmlFor='doble'>Doble</label>
+              <input
+                id='doble'
+                type='radio'
+                name='puntos'
+                value={2}
+                onChange={handleSubmit}
+                checked
+              ></input>
+              <label htmlFor='triple'>Triple</label>
+              <input
+                id='triple'
+                type='radio'
+                name='puntos'
+                value={3}
+                onChange={handleSubmit}
+              ></input>
+            </div>
+            <h3>Jugador Tirador</h3>
+            <div>
+              <label htmlFor='Base_tirador'>B</label>
+              <input
+                id='Base_tirador'
+                type='radio'
+                name='tirador'
+                value='B'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='escolta_tirador'>E</label>
+              <input
+                id='escolta_tirador'
+                type='radio'
+                name='tirador'
+                value='E'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='alero_tirador'>A</label>
+              <input
+                id='alero_tirador'
+                type='radio'
+                name='tirador'
+                value='A'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='pivot_tirador'>P</label>
+              <input
+                id='pivot_tirador'
+                type='radio'
+                name='tirador'
+                value='P'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='alaPivot_tirador'>AP</label>
+              <input
+                id='alaPivot_tirador'
+                type='radio'
+                name='tirador'
+                value='AP'
+                onChange={handleSubmit}
+              ></input>
+            </div>
+            <h3>Jugador Asistente</h3>
+            <div>
+              <label htmlFor='base'>B</label>
+              <input
+                id='base'
+                type='radio'
+                name='asistente'
+                value='B'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='escolta'>E</label>
+              <input
+                id='escolta'
+                type='radio'
+                name='asistente'
+                value='E'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='alero'>A</label>
+              <input
+                id='alero'
+                type='radio'
+                name='asistente'
+                value='A'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='pivot'>P</label>
+              <input
+                id='pivot'
+                type='radio'
+                name='asistente'
+                value='P'
+                onChange={handleSubmit}
+              ></input>
+              <label htmlFor='alaPivot'>AP</label>
+              <input
+                id='alaPivot'
+                type='radio'
+                name='asistente'
+                value='AP'
+                onChange={handleSubmit}
+              ></input>
+            </div>
+            <button type='submit'>Agregar jugada</button>
+          </fieldset>
         </FormStyle>
       </PizarraScreenStyles>
     </Layout>
