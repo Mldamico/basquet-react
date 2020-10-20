@@ -1,5 +1,4 @@
 export const PLAY_ADD = 'PLAY_ADD';
-export const PLAY_WATCH = 'PLAY_WATCH';
 export const PLAY_EDIT = 'PLAY_EDIT';
 export const PLAY_REMOVE = 'PLAY_REMOVE';
 export const PLAY_LOADING = 'PLAY_LOADING';
