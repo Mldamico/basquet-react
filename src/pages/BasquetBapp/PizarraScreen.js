@@ -4,9 +4,13 @@ import styled from 'styled-components';
 import RecordRTC from 'recordrtc';
 import { Pizarra } from '../../components/Pizarra';
 import { storage } from '../../firebase/firebase';
+
+const PizarraScreenStyles = styled.div``;
+
 export const PizarraScreen = () => {
   const [stream, setStream] = useState();
   const [record, setRecord] = useState();
+  const [didStartRecording, setDidStartRecording] = useState(false);
 
   const guardar = async () => {
     const upload = await storage
@@ -16,6 +20,7 @@ export const PizarraScreen = () => {
   };
 
   function startRecording() {
+    setDidStartRecording(true);
     let mediaConstraints = {
       video: true,
     };
@@ -32,6 +37,11 @@ export const PizarraScreen = () => {
       audioBitsPerSecond: 128000,
       videoBitsPerSecond: 128000,
       bitsPerSecond: 128000,
+      minWidth: 1280,
+      minHeight: 720,
+
+      maxWidth: 1920,
+      maxHeight: 1080,
     };
     setStream(stream1);
 
@@ -44,6 +54,7 @@ export const PizarraScreen = () => {
     // video.src = window.URL.createObjectURL(stream);
   }
   function stopRecording() {
+    setDidStartRecording(false);
     console.log(record);
     record.stopRecording((param) => {
       console.log(record.getBlob());
@@ -60,10 +71,18 @@ export const PizarraScreen = () => {
   }
   return (
     <Layout>
-      <Pizarra />
-      <button onClick={startRecording}>Start Recording</button>
-      <button onClick={stopRecording}>Stop Recording</button>
-      <button onClick={() => guardar()}>Guardar</button>
+      <Pizarra stopRecording={stopRecording} startRecording={startRecording} />
+      <PizarraScreenStyles>
+        {didStartRecording ? (
+          <button onClick={stopRecording}>Stop Recording</button>
+        ) : (
+          <button onClick={startRecording}>Start Recording</button>
+        )}
+
+        {record && !didStartRecording && (
+          <button onClick={() => guardar()}>Guardar</button>
+        )}
+      </PizarraScreenStyles>
     </Layout>
   );
 };

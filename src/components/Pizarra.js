@@ -12,7 +12,7 @@ const jugadores = [
   { id: 4, posicion: 'Ala Pivot', numero: 4, left: 310, top: 10 },
   { id: 5, posicion: 'Pivot', numero: 5, left: 410, top: 10 },
 ];
-export const Pizarra = () => {
+export const Pizarra = ({ stopRecording }) => {
   const [deltaPosition, setDeltaPosition] = useState({ x: 0, y: 0 });
   const handleEvent = (e, data) => {
     const { x, y } = deltaPosition;
@@ -20,7 +20,12 @@ export const Pizarra = () => {
     console.log(x, y);
     if (x > 120 && x < 200 && y > 20 && y < 110) {
       console.log('Punto');
+      stopRecording();
     }
+  };
+
+  const handleStart = () => {
+    startRecording();
   };
 
   const handleStop = () => {
@@ -40,8 +45,8 @@ export const Pizarra = () => {
         <Draggable
           key={jugador.id}
           defaultPosition={{ x: jugador.left, y: jugador.top }}
-          onDrag={handleEvent}
           onStop={handleStop}
+          onStart={handleStart}
         >
           <div
             style={{
@@ -60,7 +65,11 @@ export const Pizarra = () => {
           </div>
         </Draggable>
       ))}
-      <Draggable defaultPosition={{ x: 10, y: 110 }}>
+      <Draggable
+        key={'pelota'}
+        defaultPosition={{ x: 10, y: 110 }}
+        onDrag={handleEvent}
+      >
         <div
           style={{
             width: '5rem',
