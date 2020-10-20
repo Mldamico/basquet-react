@@ -68,7 +68,6 @@ export const PizarraScreen = () => {
             style={{
               width: '5rem',
               height: '5rem',
-
               backgroundColor: 'var(--yellow)',
               position: 'absolute',
               borderRadius: '50%',
