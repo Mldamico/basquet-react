@@ -87,7 +87,7 @@ export const searchPlays = (nombreJugada) => async (dispatch) => {
   }
 };
 
-export const editPlay = (play) => async (dispatch) => {
+export const editPlay = (play, id) => async (dispatch) => {
   try {
     dispatch({ type: PLAY_LOADING });
     const { data } = await axios.put(
@@ -108,11 +108,11 @@ export const editPlay = (play) => async (dispatch) => {
   }
 };
 
-export const removePlay = () => async (dispatch) => {
+export const removePlay = (id) => async (dispatch) => {
   try {
     dispatch({ type: PLAY_LOADING });
     const { data } = await axios.put(
-      `http://localhost:9001/eliminarJugada/${id}`,
+      `http://localhost:9001/eliminarJugada /${id}`,
       {}
     );
 
