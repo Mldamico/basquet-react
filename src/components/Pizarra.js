@@ -12,7 +12,11 @@ const jugadores = [
   { id: 4, posicion: 'Ala Pivot', numero: 4, left: 310, top: 10 },
   { id: 5, posicion: 'Pivot', numero: 5, left: 410, top: 10 },
 ];
-export const Pizarra = ({ stopRecording }) => {
+export const Pizarra = ({
+  stopRecording,
+  startRecording,
+  didStartRecording,
+}) => {
   const [deltaPosition, setDeltaPosition] = useState({ x: 0, y: 0 });
   const handleEvent = (e, data) => {
     const { x, y } = deltaPosition;
@@ -25,7 +29,9 @@ export const Pizarra = ({ stopRecording }) => {
   };
 
   const handleStart = () => {
-    startRecording();
+    if (!didStartRecording) {
+      startRecording();
+    }
   };
 
   const handleStop = () => {
