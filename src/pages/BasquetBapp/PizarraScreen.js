@@ -12,9 +12,15 @@ const PizarraScreenStyles = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  button {
+    margin: 2rem;
+  }
 `;
 
 const FormStyle = styled.form`
+  button {
+    margin-top: 2rem;
+  }
   display: flex;
   flex-direction: column;
   fieldset {
@@ -112,6 +118,7 @@ export const PizarraScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    guardar();
     dispatch(
       createPlay({
         nombreJugada: nombre,
@@ -136,10 +143,6 @@ export const PizarraScreen = () => {
           <button onClick={stopRecording}>Stop Recording</button>
         ) : (
           <button onClick={startRecording}>Start Recording</button>
-        )}
-
-        {record && !didStartRecording && (
-          <button onClick={() => guardar()}>Guardar</button>
         )}
 
         <FormStyle onSubmit={handleSubmit}>

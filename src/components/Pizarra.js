@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import Draggable from 'react-draggable';
 const PizarraStyled = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
 const jugadores = [
-  { id: 1, posicion: 'Base', numero: 1, left: 10, top: 10 },
-  { id: 2, posicion: 'Alero', numero: 2, left: 110, top: 10 },
-  { id: 3, posicion: 'Escolta', numero: 3, left: 210, top: 10 },
-  { id: 4, posicion: 'Ala Pivot', numero: 4, left: 310, top: 10 },
-  { id: 5, posicion: 'Pivot', numero: 5, left: 410, top: 10 },
+  { id: 1, posicion: 'Base', numero: 1, left: -460, top: 10 },
+  { id: 2, posicion: 'Alero', numero: 2, left: -390, top: 10 },
+  { id: 3, posicion: 'Escolta', numero: 3, left: -330, top: 10 },
+  { id: 4, posicion: 'Ala Pivot', numero: 4, left: -270, top: 10 },
+  { id: 5, posicion: 'Pivot', numero: 5, left: -210, top: 10 },
 ];
 export const Pizarra = ({
   stopRecording,
@@ -73,7 +74,7 @@ export const Pizarra = ({
       ))}
       <Draggable
         key={'pelota'}
-        defaultPosition={{ x: 10, y: 110 }}
+        defaultPosition={{ x: -460, y: 110 }}
         onDrag={handleEvent}
       >
         <div
