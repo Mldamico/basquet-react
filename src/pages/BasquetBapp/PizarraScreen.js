@@ -5,6 +5,8 @@ import RecordRTC from 'recordrtc';
 import { Pizarra } from '../../components/Pizarra';
 import { storage } from '../../firebase/firebase';
 import { useForm } from '../../hooks/useForm';
+import { useDispatch } from 'react-redux';
+import { createPlay } from '../../store/actions/playActions';
 const PizarraScreenStyles = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,24 +33,29 @@ const FormStyle = styled.form`
     div {
       display: flex;
     }
+    div:first-child {
+      flex-direction: column;
+    }
   }
 `;
 
 export const PizarraScreen = () => {
+  const dispatch = useDispatch();
   const [stream, setStream] = useState();
   const [record, setRecord] = useState();
   const [didStartRecording, setDidStartRecording] = useState(false);
   const [values, handleInputChange] = useForm({
+    nombre: '',
     puntos: 0,
     jugadorAsistente: '',
     jugadorTirador: '',
   });
+  const [urlJugada, setUrlJugada] = useState('');
 
-  const { puntos, jugadorAsistente, jugadorTirador } = values;
+  const { nombre, puntos, jugadorAsistente, jugadorTirador } = values;
   const guardar = async () => {
-    const upload = await storage
-      .ref(`videoList/probando-${new Date()}`)
-      .put(record.blob);
+    setUrlJugada(`videoList/probando-${Date.now()}`);
+    const upload = await storage.ref(urlJugada).put(record.blob);
     console.log(upload);
   };
 
@@ -105,7 +112,18 @@ export const PizarraScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(
+      createPlay({
+        nombreJugada: nombre,
+        tirador: jugadorTirador,
+        asistente: jugadorAsistente,
+        valor: puntos,
+        urlJugada,
+      })
+    );
+    console.log(values);
   };
+
   return (
     <Layout>
       <Pizarra
@@ -127,6 +145,17 @@ export const PizarraScreen = () => {
         <FormStyle onSubmit={handleSubmit}>
           <fieldset>
             <legend>Jugada</legend>
+            <h3>Nombre de la jugada</h3>
+            <div>
+              <input
+                id='nombre'
+                type='text'
+                name='nombre'
+                value={nombre}
+                onChange={handleInputChange}
+                checked
+              />
+            </div>
             <h3>Puntos</h3>
             <div>
               <label htmlFor='doble'>Doble</label>
@@ -135,16 +164,15 @@ export const PizarraScreen = () => {
                 type='radio'
                 name='puntos'
                 value={2}
-                onChange={handleSubmit}
-                checked
-              ></input>
+                onChange={handleInputChange}
+              />
               <label htmlFor='triple'>Triple</label>
               <input
                 id='triple'
                 type='radio'
                 name='puntos'
                 value={3}
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
             </div>
             <h3>Jugador Tirador</h3>
@@ -153,41 +181,41 @@ export const PizarraScreen = () => {
               <input
                 id='Base_tirador'
                 type='radio'
-                name='tirador'
+                name='jugadorTirador'
                 value='B'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='escolta_tirador'>E</label>
               <input
                 id='escolta_tirador'
                 type='radio'
-                name='tirador'
+                name='jugadorTirador'
                 value='E'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='alero_tirador'>A</label>
               <input
                 id='alero_tirador'
                 type='radio'
-                name='tirador'
-                value='A'
-                onChange={handleSubmit}
+                name='jugadorTirador'
+                value='AL'
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='pivot_tirador'>P</label>
               <input
                 id='pivot_tirador'
                 type='radio'
-                name='tirador'
+                name='jugadorTirador'
                 value='P'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='alaPivot_tirador'>AP</label>
               <input
                 id='alaPivot_tirador'
                 type='radio'
-                name='tirador'
+                name='jugadorTirador'
                 value='AP'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
             </div>
             <h3>Jugador Asistente</h3>
@@ -196,41 +224,41 @@ export const PizarraScreen = () => {
               <input
                 id='base'
                 type='radio'
-                name='asistente'
+                name='jugadorAsistente'
                 value='B'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='escolta'>E</label>
               <input
                 id='escolta'
                 type='radio'
-                name='asistente'
+                name='jugadorAsistente'
                 value='E'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='alero'>A</label>
               <input
                 id='alero'
                 type='radio'
-                name='asistente'
-                value='A'
-                onChange={handleSubmit}
+                name='jugadorAsistente'
+                value='AL'
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='pivot'>P</label>
               <input
                 id='pivot'
                 type='radio'
-                name='asistente'
+                name='jugadorAsistente'
                 value='P'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
               <label htmlFor='alaPivot'>AP</label>
               <input
                 id='alaPivot'
                 type='radio'
-                name='asistente'
+                name='jugadorAsistente'
                 value='AP'
-                onChange={handleSubmit}
+                onChange={handleInputChange}
               ></input>
             </div>
             <button type='submit'>Agregar jugada</button>
