@@ -6,14 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/actions/authActions';
 import { Link } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
-import { css } from '@emotion/core';
-import { Message } from '../../components/Message';
 
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-`;
+import { Message } from '../../components/Message';
+import {override } from '../../styles/PropagateLoaderOverride'
+
 const LoginStyles = styled.form`
   display: flex;
   justify-content: center;
