@@ -66,6 +66,7 @@ export const PizarraScreen = () => {
   };
 
   function startRecording() {
+    window.scroll(0, 100);
     setDidStartRecording(true);
     let mediaConstraints = {
       video: true,

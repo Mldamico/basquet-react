@@ -7,11 +7,11 @@ const PizarraStyled = styled.div`
 `;
 
 const jugadores = [
-  { id: 1, posicion: 'Base', numero: 1, left: -460, top: 10 },
-  { id: 2, posicion: 'Alero', numero: 2, left: -390, top: 10 },
-  { id: 3, posicion: 'Escolta', numero: 3, left: -330, top: 10 },
-  { id: 4, posicion: 'Ala Pivot', numero: 4, left: -270, top: 10 },
-  { id: 5, posicion: 'Pivot', numero: 5, left: -210, top: 10 },
+  { id: 1, posicion: 'B', numero: 1, left: -460, top: 10 },
+  { id: 2, posicion: 'AL', numero: 2, left: -390, top: 10 },
+  { id: 3, posicion: 'E', numero: 3, left: -320, top: 10 },
+  { id: 4, posicion: 'AP', numero: 4, left: -250, top: 10 },
+  { id: 5, posicion: 'P', numero: 5, left: -180, top: 10 },
 ];
 export const Pizarra = ({
   stopRecording,
@@ -57,8 +57,8 @@ export const Pizarra = ({
         >
           <div
             style={{
-              width: '5rem',
-              height: '5rem',
+              width: '6rem',
+              height: '6rem',
               backgroundColor: '#fff',
               position: 'absolute',
               borderRadius: '50%',
@@ -79,8 +79,8 @@ export const Pizarra = ({
       >
         <div
           style={{
-            width: '5rem',
-            height: '5rem',
+            width: '6rem',
+            height: '6rem',
             backgroundColor: 'var(--yellow)',
             position: 'absolute',
             borderRadius: '50%',
