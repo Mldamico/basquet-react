@@ -8,7 +8,18 @@ import { override } from '../../styles/PropagateLoaderOverride';
 
 const JugadasStyles = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  max-width: 70%;
+  margin: 0 auto;
+  gap: 10rem;
+
+  h2 {
+    background-color: var(--yellow);
+    transform: rotate(8deg);
+    text-align: center;
+    color: #fff;
+  }
 `;
 
 export const JugadasScreen = () => {
