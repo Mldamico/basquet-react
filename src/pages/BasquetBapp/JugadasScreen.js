@@ -16,9 +16,16 @@ const JugadasStyles = styled.div`
 
   h2 {
     background-color: var(--yellow);
-    transform: rotate(8deg);
+    transform: rotate(8deg) translateY(-3rem);
     text-align: center;
     color: #fff;
+    max-width: 60%;
+    margin: 0 auto;
+  }
+
+  img {
+    width: 300px;
+    height: 300px;
   }
 `;
 
@@ -41,6 +48,11 @@ export const JugadasScreen = () => {
         <JugadasStyles>
           {plays.map((play) => (
             <div key={play.id}>
+              {!play.image ? (
+                <img src={`assets/jugada2.jpeg`} alt={play.nombreDeLaJugada} />
+              ) : (
+                <img src={play.image} alt={play.nombreDeLaJugada} />
+              )}
               <h2>{play.nombreDeLaJugada}</h2>
               <p>Asistente: {play.posicionAsistente}</p>
               <p>Tirador: {play.posicionTirador}</p>
