@@ -60,12 +60,12 @@ export const PizarraScreen = () => {
 
   const { nombre, puntos, jugadorAsistente, jugadorTirador } = values;
   const guardar = async () => {
-    setUrlJugada(`videoList/probando-${Date.now()}`);
     const upload = await storage.ref(urlJugada).put(record.blob);
     console.log(upload);
   };
 
   function startRecording() {
+    setUrlJugada(`videoList/video-${Date.now()}`);
     window.scroll(0, 100);
     setDidStartRecording(true);
     let mediaConstraints = {
@@ -97,8 +97,6 @@ export const PizarraScreen = () => {
     recording.startRecording();
     setRecord(recording);
     console.log(recording);
-
-    // video.src = window.URL.createObjectURL(stream);
   }
   function stopRecording() {
     setDidStartRecording(false);
@@ -117,9 +115,9 @@ export const PizarraScreen = () => {
     RecordRTC.getDataURL(function (dataURL) {});
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    guardar();
+    await guardar();
     dispatch(
       createPlay({
         nombreJugada: nombre,

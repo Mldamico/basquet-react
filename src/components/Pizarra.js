@@ -25,7 +25,9 @@ export const Pizarra = ({
     console.log(x, y);
     if (x > 430 && x < 505 && y > -65 && y < 16) {
       console.log('Punto');
-      stopRecording();
+      if (didStartRecording) {
+        stopRecording();
+      }
     }
   };
 

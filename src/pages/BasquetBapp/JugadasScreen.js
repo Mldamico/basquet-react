@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Layout } from '../../components/Layout';
 import { getPlays } from '../../store/actions/playActions';
 import { override } from '../../styles/PropagateLoaderOverride';
+import { Link } from 'react-router-dom';
 
 const JugadasStyles = styled.div`
   display: grid;
@@ -53,7 +54,9 @@ export const JugadasScreen = () => {
               ) : (
                 <img src={play.image} alt={play.nombreDeLaJugada} />
               )}
-              <h2>{play.nombreDeLaJugada}</h2>
+              <Link to={`/jugadas/${play.id}`}>
+                <h2>{play.nombreDeLaJugada}</h2>
+              </Link>
               <p>Asistente: {play.posicionAsistente}</p>
               <p>Tirador: {play.posicionTirador}</p>
               <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
