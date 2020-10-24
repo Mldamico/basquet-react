@@ -62,6 +62,8 @@ export const PizarraScreen = () => {
   const guardar = async () => {
     const upload = await storage.ref(urlJugada).put(record.blob);
     console.log(upload);
+    // const downloadUrl = await storage.ref(urlJugada).getDownloadURL();
+    // console.log(downloadUrl);
   };
 
   function startRecording() {
