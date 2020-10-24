@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout } from '../../components/Layout';
-import { getPlayById } from '../../store/actions/playActions';
 import styled from 'styled-components';
-
+import { Layout } from '../../components/Layout';
+import { Title } from '../../components/Title';
 import { storage } from '../../firebase/firebase';
+import { getPlayById } from '../../store/actions/playActions';
 
 const JugadaStyles = styled.div`
   display: grid;
@@ -23,8 +23,10 @@ export const JugadaScreen = ({ match }) => {
   const dispatch = useDispatch();
   const { play, loading, error } = useSelector((state) => state.play);
   const [showVideo, setShowVideo] = useState('');
+  const { urlDeLaJugadaGuardada } = play;
   useEffect(() => {
     dispatch(getPlayById(match.params.id));
+    console.log(play);
     const getUrl = async () => {
       console.log(play.urlDeLaJugadaGuardada);
       const downloadUrl = await storage
@@ -33,14 +35,14 @@ export const JugadaScreen = ({ match }) => {
       setShowVideo(downloadUrl);
     };
     getUrl();
-  }, [dispatch]);
+  }, [dispatch, urlDeLaJugadaGuardada]);
   return (
     <Layout>
       {loading ? (
         <p>Cargando</p>
       ) : (
         <>
-          <h1>{play.nombreDeLaJugada}</h1>
+          <Title>{play.nombreDeLaJugada}</Title>
           {/* <Player playsInline src={showVideo}>
             <ControlBar>
               <ReplayControl seconds={10} order={1.1} />
