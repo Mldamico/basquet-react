@@ -8,6 +8,16 @@ import { override } from '../../styles/PropagateLoaderOverride';
 import { Link } from 'react-router-dom';
 import { Search } from '../../components/Search';
 
+const Button = styled.button`
+  margin-bottom: 5rem;
+  a {
+    text-decoration: none;
+  }
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
 const JugadasStyles = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -49,6 +59,9 @@ export const JugadasScreen = () => {
       ) : (
         <>
           <Search />
+          <Button>
+            <Link to={'/pizarra'}>Crear nueva Jugada</Link>
+          </Button>
           {plays.length === 0 && <h1>No se encontro ninguna jugada.</h1>}
           <JugadasStyles>
             {plays.map((play) => (

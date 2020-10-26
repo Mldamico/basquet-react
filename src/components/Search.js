@@ -6,10 +6,14 @@ import { searchPlays } from '../store/actions/playActions';
 const SearchStyles = styled.div`
   margin: 5rem;
   input {
-    width: 50rem;
+    width: 10rem;
     padding: 0.7rem;
     border-radius: 5px 0 0 5px;
     border: 1px solid #000;
+    transition: all 0.5s ease-in;
+  }
+  input:focus {
+    width: 50rem;
   }
   button {
     padding: 0.8rem;
