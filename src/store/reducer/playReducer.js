@@ -17,6 +17,7 @@ export const playReducer = (
       return { ...state, loading: false, plays: action.payload };
     case PLAY_GET_BY_ID:
       return { ...state, loading: false, play: action.payload };
+
     case PLAY_ADD:
       return { ...state, success: true };
     case PLAY_EDIT:
