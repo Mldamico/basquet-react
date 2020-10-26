@@ -111,11 +111,12 @@ export const removePlay = (id) => async (dispatch) => {
   try {
     dispatch({ type: PLAY_LOADING });
     const { data } = await axios.put(
-      `http://localhost:9001/eliminarJugada /${id}`,
+      `http://localhost:9001/eliminarJugada/${id}`,
       {}
     );
 
     dispatch({ type: PLAY_REMOVE, payload: data });
+    dispatch(getPlays());
     console.log(data);
   } catch (error) {
     dispatch({

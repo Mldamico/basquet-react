@@ -23,7 +23,7 @@ export const playReducer = (
     case PLAY_EDIT:
       return { ...state, success: true };
     case PLAY_REMOVE:
-      return { ...state, success: true };
+      return { ...state, loading: false, success: true };
     case PLAY_LOADING:
       return { ...state, loading: true };
     case PLAY_ERROR:

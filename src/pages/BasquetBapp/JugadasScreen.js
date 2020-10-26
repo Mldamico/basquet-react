@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PropagateLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { Layout } from '../../components/Layout';
-import { getPlays } from '../../store/actions/playActions';
+import { getPlays, removePlay } from '../../store/actions/playActions';
 import { override } from '../../styles/PropagateLoaderOverride';
 import { Link } from 'react-router-dom';
 import { Search } from '../../components/Search';
+import swal from 'sweetalert';
 
 const Button = styled.button`
   margin-bottom: 5rem;
@@ -14,6 +15,19 @@ const Button = styled.button`
     text-decoration: none;
   }
   &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+const ButtonsStyles = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  button {
+    margin: 0.5rem 0;
+  }
+
+  button:hover {
     transform: scale(1.1);
   }
 `;
@@ -28,11 +42,19 @@ const JugadasStyles = styled.div`
 
   h2 {
     background-color: var(--yellow);
-    transform: rotate(8deg) translateY(-3rem);
+    transition: all 0.2s ease-in-out;
     text-align: center;
     color: #fff;
     max-width: 60%;
     margin: 0 auto;
+
+    &:hover {
+      transform: rotate(8deg);
+    }
+  }
+
+  a {
+    text-decoration: none;
   }
 
   img {
@@ -47,6 +69,25 @@ export const JugadasScreen = () => {
   useEffect(() => {
     dispatch(getPlays());
   }, []);
+
+  const remove = (id) => {
+    swal({
+      title: 'Seguro que queres eliminar la jugada?',
+      text: 'Una vez que hayas eliminado la jugada no podras verla nuevamente',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        dispatch(removePlay(id));
+        swal('Se elimino la jugada correctamente!', {
+          icon: 'success',
+        });
+      } else {
+        swal('No se elimino la jugada!');
+      }
+    });
+  };
   return (
     <Layout>
       {loading ? (
@@ -80,6 +121,11 @@ export const JugadasScreen = () => {
                 <p>Asistente: {play.posicionAsistente}</p>
                 <p>Tirador: {play.posicionTirador}</p>
                 <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
+                <ButtonsStyles>
+                  <button>Ver</button>
+                  <button>Editar</button>
+                  <button onClick={() => remove(play.id)}>Eliminar</button>
+                </ButtonsStyles>
               </div>
             ))}
           </JugadasStyles>
