@@ -6,6 +6,7 @@ import { Layout } from '../../components/Layout';
 import { getPlays } from '../../store/actions/playActions';
 import { override } from '../../styles/PropagateLoaderOverride';
 import { Link } from 'react-router-dom';
+import { Search } from '../../components/Search';
 
 const JugadasStyles = styled.div`
   display: grid;
@@ -46,23 +47,30 @@ export const JugadasScreen = () => {
           loading={loading}
         />
       ) : (
-        <JugadasStyles>
-          {plays.map((play) => (
-            <div key={play.id}>
-              {!play.image ? (
-                <img src={`assets/jugada2.jpeg`} alt={play.nombreDeLaJugada} />
-              ) : (
-                <img src={play.image} alt={play.nombreDeLaJugada} />
-              )}
-              <Link to={`/jugadas/${play.id}`}>
-                <h2>{play.nombreDeLaJugada}</h2>
-              </Link>
-              <p>Asistente: {play.posicionAsistente}</p>
-              <p>Tirador: {play.posicionTirador}</p>
-              <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
-            </div>
-          ))}
-        </JugadasStyles>
+        <>
+          <Search />
+          {plays.length === 0 && <h1>No se encontro ninguna jugada.</h1>}
+          <JugadasStyles>
+            {plays.map((play) => (
+              <div key={play.id}>
+                {!play.image ? (
+                  <img
+                    src={`assets/jugada2.jpeg`}
+                    alt={play.nombreDeLaJugada}
+                  />
+                ) : (
+                  <img src={play.image} alt={play.nombreDeLaJugada} />
+                )}
+                <Link to={`/jugadas/${play.id}`}>
+                  <h2>{play.nombreDeLaJugada}</h2>
+                </Link>
+                <p>Asistente: {play.posicionAsistente}</p>
+                <p>Tirador: {play.posicionTirador}</p>
+                <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
+              </div>
+            ))}
+          </JugadasStyles>
+        </>
       )}
     </Layout>
   );

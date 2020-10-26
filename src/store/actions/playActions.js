@@ -69,10 +69,9 @@ export const createPlay = (play) => async (dispatch) => {
 export const searchPlays = (nombreJugada) => async (dispatch) => {
   try {
     dispatch({ type: PLAY_LOADING });
-    const { data } = await axios.post(
-      'http://localhost:9001/search',
-      nombreJugada
-    );
+    const { data } = await axios.post('http://localhost:9001/search', {
+      nombreJugada,
+    });
 
     dispatch({ type: PLAY_GET_ALL, payload: data });
     console.log(data);
