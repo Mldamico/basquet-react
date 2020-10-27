@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
 
 import { Message } from '../../components/Message';
-import {override } from '../../styles/PropagateLoaderOverride'
+import { override } from '../../styles/PropagateLoaderOverride';
 
 const LoginStyles = styled.form`
   display: flex;
@@ -43,7 +43,7 @@ const LoginStyles = styled.form`
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   const [values, handleInputChange] = useForm({
     username: '',
     password: '',

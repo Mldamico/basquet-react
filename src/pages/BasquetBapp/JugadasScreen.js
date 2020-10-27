@@ -64,7 +64,7 @@ const JugadasStyles = styled.div`
   }
 `;
 
-export const JugadasScreen = () => {
+export const JugadasScreen = ({ history }) => {
   const dispatch = useDispatch();
   const { error, loading, plays } = useSelector((state) => state.play);
   useEffect(() => {
@@ -125,11 +125,13 @@ export const JugadasScreen = () => {
                 <p>Tirador: {play.posicionTirador}</p>
                 <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
                 <ButtonsStyles>
-                  <button>
-                    <Link to={`/jugadas/${play.id}`}>Ver</Link>
+                  <button onClick={() => history.push(`/jugadas/${play.id}`)}>
+                    Ver
                   </button>
-                  <button>
-                    <Link to={`/pizarra/edit/${play.id}`}>Editar</Link>
+                  <button
+                    onClick={() => history.push(`/pizarra/edit/${play.id}`)}
+                  >
+                    Editar
                   </button>
                   <button onClick={() => remove(play.id)}>Eliminar</button>
                 </ButtonsStyles>

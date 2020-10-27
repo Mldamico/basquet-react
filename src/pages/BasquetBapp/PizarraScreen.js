@@ -61,17 +61,12 @@ export const PizarraScreen = ({ match }) => {
   const [urlJugada, setUrlJugada] = useState('');
 
   const { nombre, puntos, jugadorAsistente, jugadorTirador } = values;
-  const { id } = play;
-  useEffect(() => {
-    console.log(playId);
-    if (playId) {
-      dispatch(getPlayById(match.params.id));
-    }
 
-    if (id == playId) {
-      console.log(play);
+  useEffect(() => {
+    if (playId) {
+      dispatch(getPlayById(playId));
     }
-  }, [dispatch, playId, id]);
+  }, [dispatch, playId]);
 
   const guardar = async () => {
     const upload = await storage.ref(urlJugada).put(record.blob);

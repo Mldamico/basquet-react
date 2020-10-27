@@ -25,18 +25,17 @@ export const JugadaScreen = ({ match }) => {
   const { play, loading, error } = useSelector((state) => state.play);
   const [showVideo, setShowVideo] = useState('');
   const { urlDeLaJugadaGuardada } = play;
+  const playId = match.params.id;
   useEffect(() => {
-    dispatch(getPlayById(match.params.id));
-    console.log(play);
+    dispatch(getPlayById(playId));
     const getUrl = async () => {
-      console.log(play.urlDeLaJugadaGuardada);
       const downloadUrl = await storage
-        .ref(play.urlDeLaJugadaGuardada)
+        .ref(urlDeLaJugadaGuardada)
         .getDownloadURL();
       setShowVideo(downloadUrl);
     };
     getUrl();
-  }, [dispatch, urlDeLaJugadaGuardada]);
+  }, [dispatch, urlDeLaJugadaGuardada, playId]);
   return (
     <Layout>
       {loading ? (
