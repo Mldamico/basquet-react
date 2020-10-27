@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
+import Cancha from '../assets/cancha.png';
 const PizarraStyled = styled.div`
   display: flex;
   justify-content: center;
@@ -44,7 +45,7 @@ export const Pizarra = ({
     <PizarraStyled>
       <div
         style={{
-          backgroundImage: `url('cancha.png')`,
+          backgroundImage: `url(${Cancha})`,
           width: 1200,
           height: 1000,
           position: 'relative',

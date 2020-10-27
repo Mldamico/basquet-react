@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '../../components/Layout';
 import styled from 'styled-components';
 import RecordRTC from 'recordrtc';
 import { Pizarra } from '../../components/Pizarra';
 import { storage } from '../../firebase/firebase';
 import { useForm } from '../../hooks/useForm';
-import { useDispatch } from 'react-redux';
-import { createPlay } from '../../store/actions/playActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPlay, getPlayById } from '../../store/actions/playActions';
 const PizarraScreenStyles = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,20 +45,34 @@ const FormStyle = styled.form`
   }
 `;
 
-export const PizarraScreen = () => {
+export const PizarraScreen = ({ match }) => {
+  const playId = match.params.id;
+  const { play } = useSelector((state) => state.play);
   const dispatch = useDispatch();
   const [stream, setStream] = useState();
   const [record, setRecord] = useState();
   const [didStartRecording, setDidStartRecording] = useState(false);
   const [values, handleInputChange] = useForm({
-    nombre: '',
-    puntos: 0,
-    jugadorAsistente: '',
-    jugadorTirador: '',
+    nombre: playId ? play.nombreDeLaJugada : '',
+    puntos: playId ? play.valorDelPuntoPorDefecto : 0,
+    jugadorAsistente: playId ? play.posicionAsistente : '',
+    jugadorTirador: playId ? play.posicionTirador : '',
   });
   const [urlJugada, setUrlJugada] = useState('');
 
   const { nombre, puntos, jugadorAsistente, jugadorTirador } = values;
+  const { id } = play;
+  useEffect(() => {
+    console.log(playId);
+    if (playId) {
+      dispatch(getPlayById(match.params.id));
+    }
+
+    if (id == playId) {
+      console.log(play);
+    }
+  }, [dispatch, playId, id]);
+
   const guardar = async () => {
     const upload = await storage.ref(urlJugada).put(record.blob);
     console.log(upload);
@@ -110,11 +124,6 @@ export const PizarraScreen = () => {
     // console.log(record);
     stream.getAudioTracks().forEach((track) => track.stop());
     stream.getVideoTracks().forEach((track) => track.stop());
-  }
-  function processVideo() {
-    var recordedBlob = RecordRTC.getBlob();
-    console.log(recordedBlob);
-    RecordRTC.getDataURL(function (dataURL) {});
   }
 
   const handleSubmit = async (e) => {
@@ -169,6 +178,7 @@ export const PizarraScreen = () => {
                 name='puntos'
                 value={2}
                 onChange={handleInputChange}
+                checked={puntos === 2}
               />
               <label htmlFor='triple'>Triple</label>
               <input
@@ -177,6 +187,7 @@ export const PizarraScreen = () => {
                 name='puntos'
                 value={3}
                 onChange={handleInputChange}
+                checked={puntos === 3}
               ></input>
             </div>
             <h3>Jugador Tirador</h3>
@@ -188,6 +199,7 @@ export const PizarraScreen = () => {
                 name='jugadorTirador'
                 value='B'
                 onChange={handleInputChange}
+                checked={jugadorTirador === 'B'}
               ></input>
               <label htmlFor='escolta_tirador'>E</label>
               <input
@@ -196,14 +208,16 @@ export const PizarraScreen = () => {
                 name='jugadorTirador'
                 value='E'
                 onChange={handleInputChange}
+                checked={jugadorTirador === 'E'}
               ></input>
-              <label htmlFor='alero_tirador'>A</label>
+              <label htmlFor='alero_tirador'>AL</label>
               <input
                 id='alero_tirador'
                 type='radio'
                 name='jugadorTirador'
                 value='AL'
                 onChange={handleInputChange}
+                checked={jugadorTirador === 'AL'}
               ></input>
               <label htmlFor='pivot_tirador'>P</label>
               <input
@@ -212,6 +226,7 @@ export const PizarraScreen = () => {
                 name='jugadorTirador'
                 value='P'
                 onChange={handleInputChange}
+                checked={jugadorTirador === 'P'}
               ></input>
               <label htmlFor='alaPivot_tirador'>AP</label>
               <input
@@ -220,6 +235,7 @@ export const PizarraScreen = () => {
                 name='jugadorTirador'
                 value='AP'
                 onChange={handleInputChange}
+                checked={jugadorTirador === 'AP'}
               ></input>
             </div>
             <h3>Jugador Asistente</h3>
@@ -231,6 +247,7 @@ export const PizarraScreen = () => {
                 name='jugadorAsistente'
                 value='B'
                 onChange={handleInputChange}
+                checked={jugadorAsistente === 'B'}
               ></input>
               <label htmlFor='escolta'>E</label>
               <input
@@ -239,14 +256,16 @@ export const PizarraScreen = () => {
                 name='jugadorAsistente'
                 value='E'
                 onChange={handleInputChange}
+                checked={jugadorAsistente === 'E'}
               ></input>
-              <label htmlFor='alero'>A</label>
+              <label htmlFor='alero'>AL</label>
               <input
                 id='alero'
                 type='radio'
                 name='jugadorAsistente'
                 value='AL'
                 onChange={handleInputChange}
+                checked={jugadorAsistente === 'AL'}
               ></input>
               <label htmlFor='pivot'>P</label>
               <input
@@ -255,6 +274,7 @@ export const PizarraScreen = () => {
                 name='jugadorAsistente'
                 value='P'
                 onChange={handleInputChange}
+                checked={jugadorAsistente === 'P'}
               ></input>
               <label htmlFor='alaPivot'>AP</label>
               <input
@@ -263,6 +283,7 @@ export const PizarraScreen = () => {
                 name='jugadorAsistente'
                 value='AP'
                 onChange={handleInputChange}
+                checked={jugadorAsistente === 'AP'}
               ></input>
             </div>
             <button type='submit'>Agregar jugada</button>

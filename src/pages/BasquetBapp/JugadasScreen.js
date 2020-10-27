@@ -8,6 +8,7 @@ import { override } from '../../styles/PropagateLoaderOverride';
 import { Link } from 'react-router-dom';
 import { Search } from '../../components/Search';
 import swal from 'sweetalert';
+import { Message } from '../../components/Message';
 
 const Button = styled.button`
   margin-bottom: 5rem;
@@ -68,7 +69,7 @@ export const JugadasScreen = () => {
   const { error, loading, plays } = useSelector((state) => state.play);
   useEffect(() => {
     dispatch(getPlays());
-  }, []);
+  }, [dispatch]);
 
   const remove = (id) => {
     swal({
@@ -103,7 +104,9 @@ export const JugadasScreen = () => {
           <Button>
             <Link to={'/pizarra'}>Crear nueva Jugada</Link>
           </Button>
+          {error && <Message>{error}</Message>}
           {plays.length === 0 && <h1>No se encontro ninguna jugada.</h1>}
+
           <JugadasStyles>
             {plays.map((play) => (
               <div key={play.id}>
@@ -122,8 +125,12 @@ export const JugadasScreen = () => {
                 <p>Tirador: {play.posicionTirador}</p>
                 <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
                 <ButtonsStyles>
-                  <button>Ver</button>
-                  <button>Editar</button>
+                  <button>
+                    <Link to={`/jugadas/${play.id}`}>Ver</Link>
+                  </button>
+                  <button>
+                    <Link to={`/pizarra/edit/${play.id}`}>Editar</Link>
+                  </button>
                   <button onClick={() => remove(play.id)}>Eliminar</button>
                 </ButtonsStyles>
               </div>

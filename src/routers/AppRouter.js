@@ -39,6 +39,13 @@ export const AppRouter = () => {
           <PrivateRoute
             isAuthenticated={user}
             path='/pizarra'
+            exact
+            component={PizarraScreen}
+          />
+          <PrivateRoute
+            isAuthenticated={user}
+            path='/pizarra/edit/:id'
+            exact
             component={PizarraScreen}
           />
           <PrivateRoute

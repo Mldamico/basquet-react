@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Layout } from '../../components/Layout';
 import { Title } from '../../components/Title';
-import { PLAY_GET_BY_ID } from '../../constants/playTypes';
 import { storage } from '../../firebase/firebase';
 import { getPlayById } from '../../store/actions/playActions';
 import ReactPlayer from 'react-player';
+import { Message } from '../../components/Message';
 const JugadaStyles = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -43,6 +43,7 @@ export const JugadaScreen = ({ match }) => {
         <p>Cargando</p>
       ) : (
         <>
+          {error && <Message>{error}</Message>}
           <Title>{play.nombreDeLaJugada}</Title>
 
           {play ? (
