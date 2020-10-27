@@ -6,7 +6,11 @@ import { Pizarra } from '../../components/Pizarra';
 import { storage } from '../../firebase/firebase';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPlay, getPlayById } from '../../store/actions/playActions';
+import {
+  createPlay,
+  editPlay,
+  getPlayById,
+} from '../../store/actions/playActions';
 const PizarraScreenStyles = styled.div`
   display: flex;
   flex-direction: column;
@@ -58,7 +62,9 @@ export const PizarraScreen = ({ match }) => {
     jugadorAsistente: playId ? play.posicionAsistente : '',
     jugadorTirador: playId ? play.posicionTirador : '',
   });
-  const [urlJugada, setUrlJugada] = useState('');
+  const [urlJugada, setUrlJugada] = useState(
+    playId ? play.urlDeLaJugadaGuardada : ''
+  );
 
   const { nombre, puntos, jugadorAsistente, jugadorTirador } = values;
 
@@ -71,8 +77,6 @@ export const PizarraScreen = ({ match }) => {
   const guardar = async () => {
     const upload = await storage.ref(urlJugada).put(record.blob);
     console.log(upload);
-    // const downloadUrl = await storage.ref(urlJugada).getDownloadURL();
-    // console.log(downloadUrl);
   };
 
   function startRecording() {
@@ -123,16 +127,34 @@ export const PizarraScreen = ({ match }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await guardar();
-    dispatch(
-      createPlay({
-        nombreJugada: nombre,
-        tirador: jugadorTirador,
-        asistente: jugadorAsistente,
-        valor: puntos,
-        urlJugada,
-      })
-    );
+    if (record) {
+      await guardar();
+    }
+    if (playId) {
+      dispatch(
+        editPlay(
+          {
+            nombreJugada: nombre,
+            tirador: jugadorTirador,
+            asistente: jugadorAsistente,
+            valor: puntos,
+            urlJugada,
+          },
+          playId
+        )
+      );
+    } else {
+      dispatch(
+        createPlay({
+          nombreJugada: nombre,
+          tirador: jugadorTirador,
+          asistente: jugadorAsistente,
+          valor: puntos,
+          urlJugada,
+        })
+      );
+    }
+
     console.log(values);
   };
 
@@ -145,9 +167,9 @@ export const PizarraScreen = ({ match }) => {
       />
       <PizarraScreenStyles>
         {didStartRecording ? (
-          <button onClick={stopRecording}>Stop Recording</button>
+          <button onClick={stopRecording}>Detener Grabacion</button>
         ) : (
-          <button onClick={startRecording}>Start Recording</button>
+          <button onClick={startRecording}>Empezar Grabacion</button>
         )}
 
         <FormStyle onSubmit={handleSubmit}>
@@ -281,7 +303,9 @@ export const PizarraScreen = ({ match }) => {
                 checked={jugadorAsistente === 'AP'}
               ></input>
             </div>
-            <button type='submit'>Agregar jugada</button>
+            <button type='submit'>
+              {playId ? 'Editar Jugada' : 'Agregar jugada'}
+            </button>
           </fieldset>
         </FormStyle>
       </PizarraScreenStyles>
