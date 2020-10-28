@@ -11,6 +11,7 @@ export const getPlayers = () => async (dispatch) => {
     const { data } = await axios.get('http://localhost:9001/jugadoresAll');
 
     dispatch({ type: GET_PLAYERS, payload: data });
+    console.log('entro aca');
     console.log(data);
   } catch (error) {
     dispatch({

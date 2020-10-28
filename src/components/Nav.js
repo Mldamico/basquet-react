@@ -49,7 +49,7 @@ export const Nav = () => {
           <Link to='/datos'>Datos</Link>
         </li>
         <li>
-          <Link to='/gestion'>Gestion</Link>
+          <Link to='/gestionjugadores'>Gestion</Link>
         </li>
       </ul>
     </NavStyles>
