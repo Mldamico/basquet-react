@@ -7,9 +7,15 @@ import { storage } from '../../firebase/firebase';
 import { getPlayById } from '../../store/actions/playActions';
 import ReactPlayer from 'react-player';
 import { Message } from '../../components/Message';
+
 const JugadaStyles = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+
+  .play__description {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const AbbreviationToWord = {
@@ -47,11 +53,24 @@ export const JugadaScreen = ({ match }) => {
 
           {play ? (
             <JugadaStyles>
-              <div>
-                <h2>Posicion Asistente</h2>
-                {AbbreviationToWord[play.posicionAsistente]}
-                <h2>Posicion Tirador</h2>
-                {AbbreviationToWord[play.posicionTirador]}
+              <div className='play__description'>
+                <div>
+                  <h2>Posicion Asistente</h2>
+                  {AbbreviationToWord[play.posicionAsistente]}
+                </div>
+                <div>
+                  <h2>Posicion Tirador</h2>
+                  {AbbreviationToWord[play.posicionTirador]}
+                </div>
+
+                <div>
+                  <h2>Puntos</h2>
+                  {play.valorDelPuntoPorDefecto}
+                </div>
+                <div>
+                  <h2>Jugada Utilizada</h2>
+                  {play.jugadaUtilizada ? 'Si' : 'No'}
+                </div>
               </div>
 
               <div>

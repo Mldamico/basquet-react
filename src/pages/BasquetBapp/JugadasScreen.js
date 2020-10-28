@@ -53,11 +53,9 @@ const JugadasStyles = styled.div`
       transform: rotate(8deg);
     }
   }
-
   a {
     text-decoration: none;
   }
-
   img {
     width: 300px;
     height: 300px;

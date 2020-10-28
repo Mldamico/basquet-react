@@ -7,8 +7,9 @@ const TitleStyles = styled.div`
     transform: rotate(8deg);
     text-align: center;
     color: #fff;
-    max-width: 30%;
-    margin: 5rem auto;
+    display: inline-block;
+    margin: 8rem auto;
+    padding: 0 5rem;
   }
 `;
 
