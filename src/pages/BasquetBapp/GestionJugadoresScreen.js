@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Layout } from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPlayers } from '../../store/actions/playerActions';
+import { getPlayers } from '../../store/actions/playersActions';
 import { override } from '../../styles/PropagateLoaderOverride';
 import { PropagateLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { Player } from '../../components/Player';
+import { Message } from '../../components/Message';
 
 const GestionStyles = styled.div`
   margin: 5rem auto;
@@ -19,8 +20,8 @@ export const GestionJugadoresScreen = () => {
   const { players, loading, error } = useSelector((state) => state.players);
   useEffect(() => {
     dispatch(getPlayers());
-    console.log(players);
   }, [dispatch]);
+
   return (
     <Layout>
       {loading ? (
@@ -31,11 +32,14 @@ export const GestionJugadoresScreen = () => {
           loading={loading}
         />
       ) : (
-        <GestionStyles>
-          {players.map((player) => (
-            <Player player={player} id={player.id} />
-          ))}
-        </GestionStyles>
+        <>
+          {error && <Message>{error}</Message>}
+          <GestionStyles>
+            {players.map((player) => (
+              <Player player={player} key={player.id} />
+            ))}
+          </GestionStyles>
+        </>
       )}
     </Layout>
   );

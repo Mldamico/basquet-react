@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Unknown from '../assets/unknown.jpg';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  ActivatePlayerOnTeam,
+  removePlayerFromTeam,
+} from '../store/actions/playersActions';
 const PlayerStyles = styled.div`
   img {
     width: 300px;
@@ -8,10 +13,21 @@ const PlayerStyles = styled.div`
 `;
 
 export const Player = ({ player }) => {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const deactivatePlayer = (id) => {
+    dispatch(removePlayerFromTeam(id, user.id));
+  };
+  const activatePlayer = (id) => {
+    dispatch(ActivatePlayerOnTeam(id, user.id));
+  };
   return (
     <PlayerStyles>
       <div>
-        <img src={player.urlFoto ? player.urlFoto : Unknown} />
+        <img
+          src={player.urlFoto ? player.urlFoto : Unknown}
+          alt={player.name}
+        />
       </div>
       <div>
         <h3>
@@ -25,9 +41,13 @@ export const Player = ({ player }) => {
           {player.activo ? 'Jugador Activo en el equipo' : 'Jugador No activo'}
         </p>
         {player.activo ? (
-          <button>Desactivar Jugador</button>
+          <button onClick={() => deactivatePlayer(player.id)}>
+            Desactivar Jugador
+          </button>
         ) : (
-          <button>Activar Jugador</button>
+          <button onClick={() => activatePlayer(player.id)}>
+            Activar Jugador
+          </button>
         )}
       </div>
     </PlayerStyles>

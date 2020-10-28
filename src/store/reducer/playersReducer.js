@@ -2,6 +2,8 @@ import {
   GET_PLAYERS,
   PLAYERS_LOADING,
   PLAYERS_ERROR,
+  PLAYERS_DEACTIVATE_PLAYER,
+  PLAYERS_ACTIVATE_PLAYER,
 } from '../../constants/playersTypes';
 
 export const playersReducer = (
@@ -16,6 +18,21 @@ export const playersReducer = (
       };
     case GET_PLAYERS:
       return { ...state, players: action.payload, loading: false, error: null };
+    case PLAYERS_DEACTIVATE_PLAYER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        success: true,
+      };
+    case PLAYERS_ACTIVATE_PLAYER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        success: true,
+      };
+
     case PLAYERS_ERROR:
       return { ...state, loading: false, error: action.payload };
     default:
