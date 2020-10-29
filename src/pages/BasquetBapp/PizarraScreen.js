@@ -101,7 +101,6 @@ export const PizarraScreen = ({ match }) => {
       bitsPerSecond: 128000,
       minWidth: 1280,
       minHeight: 720,
-
       maxWidth: 1920,
       maxHeight: 1080,
     };

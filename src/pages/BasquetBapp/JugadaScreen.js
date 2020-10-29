@@ -7,6 +7,7 @@ import { storage } from '../../firebase/firebase';
 import { getPlayById } from '../../store/actions/playActions';
 import ReactPlayer from 'react-player';
 import { Message } from '../../components/Message';
+import { CenterLoading } from '../../components/CenterLoading';
 
 const JugadaStyles = styled.div`
   display: grid;
@@ -45,7 +46,7 @@ export const JugadaScreen = ({ match }) => {
   return (
     <Layout>
       {loading ? (
-        <p>Cargando</p>
+        <CenterLoading />
       ) : (
         <>
           {error && <Message>{error}</Message>}

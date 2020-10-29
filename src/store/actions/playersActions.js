@@ -13,8 +13,6 @@ export const getPlayers = () => async (dispatch) => {
     const { data } = await axios.get('http://localhost:9001/jugadoresAll');
 
     dispatch({ type: GET_PLAYERS, payload: data });
-    console.log('entro aca');
-    console.log(data);
   } catch (error) {
     dispatch({
       type: PLAYERS_ERROR,
@@ -31,13 +29,11 @@ export const removePlayerFromTeam = (playerId, idAsistente) => async (
 ) => {
   try {
     dispatch({ type: PLAYERS_LOADING });
-    const { data } = await axios.put(`http://localhost:9001/baja/${playerId}`, {
+    await axios.put(`http://localhost:9001/baja/${playerId}`, {
       usuario: idAsistente,
     });
 
     dispatch({ type: PLAYERS_DEACTIVATE_PLAYER });
-    console.log('entro aca');
-    console.log(data);
   } catch (error) {
     dispatch({
       type: PLAYERS_ERROR,
@@ -54,13 +50,11 @@ export const ActivatePlayerOnTeam = (playerId, idAsistente) => async (
 ) => {
   try {
     dispatch({ type: PLAYERS_LOADING });
-    const { data } = await axios.put(`http://localhost:9001/alta/${playerId}`, {
+    await axios.put(`http://localhost:9001/alta/${playerId}`, {
       usuario: idAsistente,
     });
 
     dispatch({ type: PLAYERS_ACTIVATE_PLAYER });
-    console.log('entro aca');
-    console.log(data);
   } catch (error) {
     dispatch({
       type: PLAYERS_ERROR,

@@ -7,6 +7,7 @@ import { PropagateLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { Player } from '../../components/Player';
 import { Message } from '../../components/Message';
+import { CenterLoading } from '../../components/CenterLoading';
 
 const GestionStyles = styled.div`
   margin: 5rem auto;
@@ -17,20 +18,18 @@ const GestionStyles = styled.div`
 
 export const GestionJugadoresScreen = () => {
   const dispatch = useDispatch();
-  const { players, loading, error } = useSelector((state) => state.players);
+  const { players, loading, error, success } = useSelector(
+    (state) => state.players
+  );
+
   useEffect(() => {
     dispatch(getPlayers());
-  }, [dispatch]);
+  }, [dispatch, success]);
 
   return (
     <Layout>
       {loading ? (
-        <PropagateLoader
-          css={override}
-          size={15}
-          color={'#FF4949'}
-          loading={loading}
-        />
+        <CenterLoading loading={loading} />
       ) : (
         <>
           {error && <Message>{error}</Message>}

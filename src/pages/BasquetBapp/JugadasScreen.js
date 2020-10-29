@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { PropagateLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { Layout } from '../../components/Layout';
 import { getPlays, removePlay } from '../../store/actions/playActions';
-import { override } from '../../styles/PropagateLoaderOverride';
 import { Link } from 'react-router-dom';
 import { Search } from '../../components/Search';
 import swal from 'sweetalert';
 import { Message } from '../../components/Message';
+import { CenterLoading } from '../../components/CenterLoading';
 
 const Button = styled.button`
   margin-bottom: 5rem;
@@ -90,12 +89,7 @@ export const JugadasScreen = ({ history }) => {
   return (
     <Layout>
       {loading ? (
-        <PropagateLoader
-          css={override}
-          size={15}
-          color={'#FF4949'}
-          loading={loading}
-        />
+        <CenterLoading />
       ) : (
         <>
           <Search />

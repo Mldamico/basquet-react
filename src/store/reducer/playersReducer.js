@@ -17,7 +17,13 @@ export const playersReducer = (
         loading: true,
       };
     case GET_PLAYERS:
-      return { ...state, players: action.payload, loading: false, error: null };
+      return {
+        ...state,
+        players: action.payload,
+        loading: false,
+        error: null,
+        success: null,
+      };
     case PLAYERS_DEACTIVATE_PLAYER:
       return {
         ...state,
