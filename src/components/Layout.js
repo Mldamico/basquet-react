@@ -3,14 +3,16 @@ import { Nav } from './Nav';
 import styled from 'styled-components';
 
 const LayoutStyles = styled.div`
-  max-width: 1600px;
+  /* width: 1600px; */
+  max-height: 100px;
+  /* height: 100vh; */
   text-align: center;
   margin: 0 auto;
 `;
 export const Layout = ({ children }) => {
   return (
     <>
-      <Nav />
+      {/* <Nav /> */}
       <LayoutStyles>{children}</LayoutStyles>
     </>
   );

@@ -11,10 +11,12 @@ const GlobalStyles = createGlobalStyle`
   }
   html {
     font-size: 10px;
+    
   }
   body {
     font-size: 1.8rem;
     font-family: 'Open Sans', sans-serif;
+    
   }
   fieldset {
     border-color: rgba(0,0,0,0.1);
@@ -27,13 +29,13 @@ const GlobalStyles = createGlobalStyle`
     padding: 0.6rem 1rem;
     border-radius: 2px;
     cursor: pointer;
-    --cast: 2px;
-    box-shadow: var(--cast) var(--cast) 0 var(--grey);
+    /* --cast: 2px;
+    box-shadow: var(--cast) var(--cast) 0 var(--grey); */
     text-shadow: 0.5px 0.5px 0 rgba(0,0,0,0.2);
     transition: all 0.2s;
-    &:hover {
+    /* &:hover {
       --cast: 4px;
-    }
+    } */
   }
   a {
     text-decoration: none;

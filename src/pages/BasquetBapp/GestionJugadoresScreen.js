@@ -19,11 +19,10 @@ export const GestionJugadoresScreen = () => {
   const { players, loading, error, success } = useSelector(
     (state) => state.players
   );
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getPlayers());
-  }, [dispatch, success, user]);
+  }, [dispatch, success]);
 
   return (
     <Layout>

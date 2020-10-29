@@ -10,33 +10,89 @@ import { PropagateLoader } from 'react-spinners';
 import { Message } from '../../components/Message';
 import { override } from '../../styles/PropagateLoaderOverride';
 
-const LoginStyles = styled.form`
+const LoginStyles = styled.div`
+  height: 100vh;
+  background-color: var(--yellow);
+  background-image: url('/ball.webp');
+  z-index: 10;
+  background-size: 40rem;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-  fieldset {
+  .heading {
+    width: 50%;
+    color: #fff;
     display: flex;
-    padding-right: 2.5rem;
     flex-direction: column;
-    width: 40rem;
+    justify-content: space-evenly;
+    h1 {
+      font-size: 5rem;
+      margin-top: 12rem;
+    }
 
-    input {
-      width: 100%;
-      border-radius: 5px;
-      margin: 0.5rem 0;
-      padding: 0.5rem 0.5rem 1rem;
-      border: 0.5px solid var(--black);
+    h1,
+    h2 {
+      background-color: var(--red);
+      text-align: center;
+      color: #fff;
+      display: inline-block;
+      margin: 8rem auto;
+      padding: 0 5rem;
+    }
+    ul {
+      list-style: none;
+
+      li {
+        padding: 1.5rem;
+        font-size: 2rem;
+      }
     }
   }
 
-  .buttonContainer {
-    padding: 1rem;
+  form {
+    width: 50%;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
 
-    button {
-      margin: 1rem;
+    a:hover {
+      color: var(--red);
+    }
+
+    fieldset {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0 20% 0 40%;
+      border: 1px solid var(--red);
+      legend {
+        text-align: left;
+        font-size: 2rem;
+      }
+      input {
+        width: 100%;
+        border-radius: 5px;
+        margin: 1rem 0;
+        padding: 0.5rem 0.5rem 1rem;
+        border: 0.5px solid var(--black);
+      }
+
+      label {
+        margin: 1rem 0;
+      }
+
+      .buttonContainer {
+        padding: 1rem;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+          margin: 1rem;
+          padding: 1rem 3rem;
+        }
+      }
     }
   }
 `;
@@ -57,48 +113,63 @@ export const LoginScreen = () => {
   const { username, password } = values;
   return (
     <Layout>
-      <LoginStyles onSubmit={submitForm}>
-        {loading ? (
-          <PropagateLoader
-            css={override}
-            size={15}
-            color={'#FF4949'}
-            loading={loading}
-          />
-        ) : (
-          <fieldset>
-            <legend>Login</legend>
-            <label htmlFor='username'>Usuario</label>
-            <input
-              type='text'
-              name='username'
-              id='username'
-              value={username}
-              onChange={handleInputChange}
-            />
-            <label htmlFor='password'>Password</label>
-            <input
-              type='password'
-              name='password'
-              id='password'
-              value={password}
-              onChange={handleInputChange}
-            />
-            <div className='buttonContainer'>
-              <button className='btn' type='submit'>
-                Login
-              </button>
-            </div>
-            <p>
-              <span style={{ marginRight: '.5rem' }}>
-                Necesita crear una cuenta?
-              </span>
-              <Link to='/auth/register'>Registrarse</Link>
-            </p>
-            {error && <Message BackgroundColor='#d9534f'>{error}</Message>}
-          </fieldset>
-        )}
-      </LoginStyles>
+      {loading ? (
+        <PropagateLoader
+          css={override}
+          size={15}
+          color={'#FF4949'}
+          loading={loading}
+        />
+      ) : (
+        <LoginStyles>
+          <div className='heading'>
+            <h1>BASQUETBAPP</h1>
+
+            <ul>
+              <li>Pizarra Electronica</li>
+              <li>Estadisticas</li>
+              <li>Toma De Datos En Tiempo Real</li>
+              <li>Gestion De Jugadores</li>
+            </ul>
+
+            <h2>La APP de tu equipo</h2>
+          </div>
+
+          <form onClick={submitForm}>
+            <fieldset>
+              <legend>Login</legend>
+              <label htmlFor='username'>Usuario</label>
+              <input
+                type='text'
+                name='username'
+                id='username'
+                value={username}
+                onChange={handleInputChange}
+              />
+              <label htmlFor='password'>Password</label>
+              <input
+                type='password'
+                name='password'
+                id='password'
+                value={password}
+                onChange={handleInputChange}
+              />
+              <div className='buttonContainer'>
+                <button className='btn' type='submit'>
+                  Login
+                </button>
+              </div>
+              <p>
+                <span style={{ marginRight: '.5rem' }}>
+                  Necesita crear una cuenta?
+                </span>
+                <Link to='/auth/register'>Registrarse</Link>
+              </p>
+              {error && <Message BackgroundColor='#d9534f'>{error}</Message>}
+            </fieldset>
+          </form>
+        </LoginStyles>
+      )}
     </Layout>
   );
 };
