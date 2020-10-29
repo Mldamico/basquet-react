@@ -20,54 +20,54 @@ export const AppRouter = () => {
       <div>
         <Switch>
           <PublicRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             path='/auth'
             component={AuthRouter}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             path='/jugadas'
             exact
             component={JugadasScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             path='/jugadas/:id'
             exact
             component={JugadaScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             path='/pizarra'
             exact
             component={PizarraScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             path='/pizarra/edit/:id'
             exact
             component={PizarraScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             exact
             path='/gestionjugadores'
             component={GestionJugadoresScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             exact
             path='/tomardatos'
             component={TomarDatosScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             exact
             path='/estadisticas'
             component={EstadisticasScreen}
           />
           <PrivateRoute
-            isAuthenticated={user}
+            isAuthenticated={!!user}
             exact
             path='/'
             component={HomeScreen}

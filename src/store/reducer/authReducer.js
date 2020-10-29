@@ -7,7 +7,7 @@ import {
 } from '../../constants/authTypes';
 
 export const authReducer = (
-  state = { user: {}, loading: false, error: null },
+  state = { user: null, loading: false, error: null },
   action
 ) => {
   switch (action.type) {
@@ -19,7 +19,7 @@ export const authReducer = (
     case LOGIN:
       return { loading: false, user: action.payload };
     case LOGOUT:
-      return { loading: false, user: {} };
+      return { loading: false, user: null };
     case REGISTER:
       return { loading: false, user: action.payload };
     case AUTH_ERROR:

@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { Layout } from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPlayers } from '../../store/actions/playersActions';
-import { override } from '../../styles/PropagateLoaderOverride';
-import { PropagateLoader } from 'react-spinners';
 import styled from 'styled-components';
 import { Player } from '../../components/Player';
 import { Message } from '../../components/Message';
@@ -21,10 +19,11 @@ export const GestionJugadoresScreen = () => {
   const { players, loading, error, success } = useSelector(
     (state) => state.players
   );
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getPlayers());
-  }, [dispatch, success]);
+  }, [dispatch, success, user]);
 
   return (
     <Layout>

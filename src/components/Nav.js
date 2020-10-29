@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../store/actions/authActions';
 const NavStyles = styled.nav`
   h1 {
     margin-left: 2rem;
@@ -31,6 +32,10 @@ const NavStyles = styled.nav`
 
 export const Nav = () => {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const logoutUser = () => {
+    dispatch(logout());
+  };
   return (
     <NavStyles>
       <ul>
@@ -50,6 +55,9 @@ export const Nav = () => {
         </li>
         <li>
           <Link to='/gestionjugadores'>Gestion</Link>
+        </li>
+        <li>
+          <button onClick={logoutUser}>Logout</button>
         </li>
       </ul>
     </NavStyles>

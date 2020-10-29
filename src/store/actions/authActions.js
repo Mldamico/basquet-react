@@ -4,6 +4,7 @@ import {
   AUTH_LOADING,
   LOGIN,
   REGISTER,
+  LOGOUT,
 } from '../../constants/authTypes';
 
 export const login = (user) => {
@@ -28,6 +29,11 @@ export const login = (user) => {
       });
     }
   };
+};
+
+export const logout = () => (dispatch) => {
+  localStorage.removeItem('user');
+  dispatch({ type: LOGOUT });
 };
 
 export const register = (user) => {
