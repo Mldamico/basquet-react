@@ -48,6 +48,8 @@ export const register = (user) => {
         dorsal: user.dorsal,
         dni: user.dni,
         fechaNacimiento: user.fechaNacimiento,
+        altura: user.altura,
+        fileUrl: user.fileUrl,
       });
 
       dispatch({ type: REGISTER, payload: data });

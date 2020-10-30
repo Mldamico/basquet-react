@@ -1,106 +1,14 @@
 import React from 'react';
 import { Layout } from '../../components/Layout';
 import { useForm } from '../../hooks/useForm';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/actions/authActions';
 import { Link } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
-
+import { LoginStyles } from '../../styles/LoginStyles';
 import { Message } from '../../components/Message';
 import { override } from '../../styles/PropagateLoaderOverride';
-
-const LoginStyles = styled.div`
-  height: 100vh;
-  background-color: var(--yellow);
-  background-image: url('/ball.webp');
-  z-index: 10;
-  background-size: 40rem;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  display: flex;
-  .heading {
-    width: 50%;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    h1 {
-      font-size: 5rem;
-      margin-top: 12rem;
-    }
-
-    h1,
-    h2 {
-      background-color: var(--red);
-      text-align: center;
-      color: #fff;
-      display: inline-block;
-      margin: 8rem auto;
-      padding: 0 5rem;
-    }
-    ul {
-      list-style: none;
-
-      li {
-        padding: 1.5rem;
-        font-size: 2rem;
-      }
-    }
-  }
-
-  form {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-
-    a:hover {
-      color: var(--yellow);
-    }
-
-    fieldset {
-      background-color: var(--red);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem;
-      align-items: center;
-      margin: 0 15% 0 35%;
-      border: 1px solid var(--black);
-      border-radius: 10px;
-      legend {
-        text-align: left;
-        font-size: 2rem;
-      }
-      input {
-        width: 100%;
-        border-radius: 5px;
-        margin: 1rem 0;
-        padding: 0.5rem 0.5rem 1rem;
-        border: 0.5px solid var(--black);
-      }
-
-      label {
-        margin: 1rem 0;
-      }
-
-      .buttonContainer {
-        padding: 1rem;
-        display: flex;
-        justify-content: flex-end;
-
-        button {
-          margin: 1rem;
-          padding: 1rem 5rem;
-          background-color: var(--yellow);
-          border: 1px solid var(--black);
-        }
-      }
-    }
-  }
-`;
+import { Title } from '../../components/Title';
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -128,7 +36,7 @@ export const LoginScreen = () => {
       ) : (
         <LoginStyles>
           <div className='heading'>
-            <h1>BASQUETBAPP</h1>
+            <Title size={5}>BASQUETBAPP</Title>
 
             <ul>
               <li>Pizarra Electronica</li>

@@ -4,18 +4,17 @@ import styled from 'styled-components';
 const TitleStyles = styled.div`
   h1 {
     background-color: var(--red);
-    transform: rotate(8deg);
     text-align: center;
     color: #fff;
     display: inline-block;
-    margin: 8rem auto;
     padding: 0 5rem;
+    font-size: ${(props) => props.size + 'rem' || '1rem'};
   }
 `;
 
-export const Title = ({ children }) => {
+export const Title = ({ children, size }) => {
   return (
-    <TitleStyles>
+    <TitleStyles size={size}>
       <h1>{children}</h1>
     </TitleStyles>
   );
