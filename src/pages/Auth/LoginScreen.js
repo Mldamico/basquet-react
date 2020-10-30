@@ -57,16 +57,19 @@ const LoginStyles = styled.div`
     color: #fff;
 
     a:hover {
-      color: var(--red);
+      color: var(--yellow);
     }
 
     fieldset {
+      background-color: var(--red);
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding: 6rem;
       align-items: center;
-      margin: 0 20% 0 40%;
-      border: 1px solid var(--red);
+      margin: 0 15% 0 35%;
+      border: 1px solid var(--black);
+      border-radius: 10px;
       legend {
         text-align: left;
         font-size: 2rem;
@@ -90,7 +93,9 @@ const LoginStyles = styled.div`
 
         button {
           margin: 1rem;
-          padding: 1rem 3rem;
+          padding: 1rem 5rem;
+          background-color: var(--yellow);
+          border: 1px solid var(--black);
         }
       }
     }
@@ -135,7 +140,7 @@ export const LoginScreen = () => {
             <h2>La APP de tu equipo</h2>
           </div>
 
-          <form onClick={submitForm}>
+          <form onSubmit={submitForm}>
             <fieldset>
               <legend>Login</legend>
               <label htmlFor='username'>Usuario</label>
