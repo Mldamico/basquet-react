@@ -13,7 +13,7 @@ import { Title } from '../../components/Title';
 const RegisterStyles = styled.form`
   h2 {
     color: #fff;
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
   }
   fieldset {
     color: #fff;
@@ -28,10 +28,20 @@ const RegisterStyles = styled.form`
       font-weight: bold;
     }
 
-    .register-form {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+    .register__container {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .register__col {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 2;
+      margin: 0 5rem;
+    }
+
+    input {
+      margin: 0.8rem;
     }
 
     button {
@@ -98,90 +108,98 @@ export const RegisterScreen = () => {
           <form onSubmit={submitForm}>
             <fieldset>
               <legend>Registrarse</legend>
-              <div className='register-form'>
-                <label htmlFor='username'>Usuario</label>
-                <input
-                  type='text'
-                  name='username'
-                  id='username'
-                  value={username}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='password'>Password</label>
-                <input
-                  type='password'
-                  name='password'
-                  id='password'
-                  value={password}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='confirmPassword'>Confirm Password</label>
-                <input
-                  type='password'
-                  name='confirmPassword'
-                  id='confirmPassword'
-                  value={confirmPassword}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='nombre'>Nombre</label>
-                <input
-                  type='text'
-                  name='nombre'
-                  id='nombre'
-                  value={nombre}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='nombre'>Apellido</label>
-                <input
-                  type='text'
-                  name='apellido'
-                  id='apellido'
-                  value={apellido}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='dorsal'>Dorsal</label>
-                <input
-                  type='number'
-                  name='dorsal'
-                  id='dorsal'
-                  value={dorsal}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='altura'>Altura (CM)</label>
-                <input
-                  type='number'
-                  name='altura'
-                  id='altura'
-                  value={altura}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='dni'>DNI</label>
-                <input
-                  type='number'
-                  name='dni'
-                  id='dni'
-                  value={dni}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor='fechaNacimiento'>Fecha de nacimiento</label>
-                <input
-                  type='date'
-                  name='fechaNacimiento'
-                  id='fechaNacimiento'
-                  value={fechaNacimiento}
-                  onChange={handleInputChange}
-                />
+              <div className='register__container'>
+                <div className='register__col'>
+                  <label htmlFor='username'>Usuario</label>
+                  <input
+                    type='text'
+                    name='username'
+                    id='username'
+                    value={username}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='password'>Password</label>
+                  <input
+                    type='password'
+                    name='password'
+                    id='password'
+                    value={password}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='confirmPassword'>Confirm Password</label>
+                  <input
+                    type='password'
+                    name='confirmPassword'
+                    id='confirmPassword'
+                    value={confirmPassword}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='nombre'>Nombre</label>
+                  <input
+                    type='text'
+                    name='nombre'
+                    id='nombre'
+                    value={nombre}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='nombre'>Apellido</label>
+                  <input
+                    type='text'
+                    name='apellido'
+                    id='apellido'
+                    value={apellido}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className='register__col'>
+                  <label htmlFor='dorsal'>Dorsal</label>
+                  <input
+                    type='number'
+                    name='dorsal'
+                    id='dorsal'
+                    value={dorsal}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='altura'>Altura (CM)</label>
+                  <input
+                    type='number'
+                    name='altura'
+                    id='altura'
+                    value={altura}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='dni'>DNI</label>
+                  <input
+                    type='number'
+                    name='dni'
+                    id='dni'
+                    value={dni}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor='fechaNacimiento'>Fecha de nacimiento</label>
+                  <input
+                    type='date'
+                    name='fechaNacimiento'
+                    id='fechaNacimiento'
+                    value={fechaNacimiento}
+                    onChange={handleInputChange}
+                  />
 
-                <input
-                  id='fileSelector'
-                  type='file'
-                  name='fileUrl'
-                  style={{ display: 'none' }}
-                  onChange={handleInputChange}
-                />
-                <button className='btn' onClick={handlePictureClick}>
-                  Picture
-                </button>
+                  <input
+                    id='fileSelector'
+                    type='file'
+                    name='fileUrl'
+                    style={{ display: 'none' }}
+                    onChange={handleInputChange}
+                  />
+                  <button
+                    className='btn'
+                    onClick={handlePictureClick}
+                    disabled={fileUrl}
+                  >
+                    SUBIR IMAGEN
+                  </button>
+                </div>
               </div>
               <div className='buttonContainer'>
                 <button className='btn' type='submit'>
