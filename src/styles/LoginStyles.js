@@ -61,6 +61,7 @@ export const LoginStyles = styled.div`
       legend {
         text-align: left;
         font-size: 2rem;
+        font-weight: bold;
       }
       input {
         width: 100%;

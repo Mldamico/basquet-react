@@ -50,7 +50,7 @@ export const LoginScreen = () => {
 
           <form onSubmit={submitForm}>
             <fieldset>
-              <legend>Login</legend>
+              <legend>Iniciar Sesion</legend>
               <label htmlFor='username'>Usuario</label>
               <input
                 type='text'

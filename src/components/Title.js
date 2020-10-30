@@ -7,8 +7,9 @@ const TitleStyles = styled.div`
     text-align: center;
     color: #fff;
     display: inline-block;
-    padding: 0 5rem;
+    padding: 2rem 6rem;
     font-size: ${(props) => props.size + 'rem' || '1rem'};
+    font-family: 'Henny Penny', cursive;
   }
 `;
 
