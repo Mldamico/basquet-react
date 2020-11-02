@@ -8,10 +8,12 @@ import { Message } from '../../components/Message';
 import { CenterLoading } from '../../components/CenterLoading';
 
 const GestionStyles = styled.div`
-  margin: 5rem auto;
+  margin: 6rem auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  max-width: 1600px;
   gap: 5rem;
+  color: #fff;
 `;
 
 export const GestionJugadoresScreen = () => {

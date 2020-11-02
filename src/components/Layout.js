@@ -18,6 +18,7 @@ const LayoutStyles = styled.div`
     padding: 0.5rem;
     font-weight: bold;
     font-size: 1.6rem;
+    border: 1px solid var(--white);
   }
 
   .back-button {
