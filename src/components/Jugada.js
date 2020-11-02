@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { removePlay } from '../store/actions/playActions';
+import userEvent from '@testing-library/user-event';
 
 const JugadaStyles = styled.div`
   background-color: var(--red);
@@ -49,6 +50,7 @@ const ButtonsStyles = styled.div`
 export const Jugada = ({ play }) => {
   let history = useHistory();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const remove = (id) => {
     swal({
       title: 'Seguro que queres eliminar la jugada?',
@@ -83,10 +85,14 @@ export const Jugada = ({ play }) => {
       <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
       <ButtonsStyles>
         <button onClick={() => history.push(`/jugadas/${play.id}`)}>Ver</button>
-        <button onClick={() => history.push(`/pizarra/edit/${play.id}`)}>
-          Editar
-        </button>
-        <button onClick={() => remove(play.id)}>Eliminar</button>
+        {user.tipo === 'entrenador' && (
+          <>
+            <button onClick={() => history.push(`/pizarra/edit/${play.id}`)}>
+              Editar
+            </button>
+            <button onClick={() => remove(play.id)}>Eliminar</button>
+          </>
+        )}
       </ButtonsStyles>
     </JugadaStyles>
   );

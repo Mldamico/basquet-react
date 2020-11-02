@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
 import Cancha from '../assets/cancha.png';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 const PizarraStyled = styled.div`
   display: flex;
   justify-content: center;
@@ -19,6 +21,8 @@ export const Pizarra = ({
   startRecording,
   didStartRecording,
 }) => {
+  let history = useHistory();
+  const { user } = useSelector((state) => state.auth);
   const [deltaPosition, setDeltaPosition] = useState({ x: 0, y: 0 });
   const handleEvent = (e, data) => {
     const { x, y } = deltaPosition;
@@ -31,6 +35,12 @@ export const Pizarra = ({
       }
     }
   };
+
+  useEffect(() => {
+    // if (user && user !== 'entrenador') {
+    //   history.push('/');
+    // }
+  }, [user]);
 
   const handleStart = () => {
     if (!didStartRecording) {

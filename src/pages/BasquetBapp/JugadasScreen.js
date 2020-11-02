@@ -30,6 +30,7 @@ const JugadasStyles = styled.div`
 export const JugadasScreen = () => {
   const dispatch = useDispatch();
   const { error, loading, plays } = useSelector((state) => state.play);
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getPlays());
   }, [dispatch]);
@@ -41,9 +42,11 @@ export const JugadasScreen = () => {
       ) : (
         <>
           <Search />
-          <Button>
-            <Link to={'/pizarra'}>Crear nueva Jugada</Link>
-          </Button>
+          {user.tipo === 'entrenador' && (
+            <Button>
+              <Link to={'/pizarra'}>Crear nueva Jugada</Link>
+            </Button>
+          )}
           {error && <Message>{error}</Message>}
           {plays.length === 0 && <h1>No se encontro ninguna jugada.</h1>}
 

@@ -24,15 +24,22 @@ const PizarraScreenStyles = styled.div`
 const FormStyle = styled.form`
   button {
     margin-top: 2rem;
+    background-color: var(--yellow);
   }
   display: flex;
   flex-direction: column;
   fieldset {
+    border: 1px solid #fff;
+    background-color: var(--red);
+    color: #fff;
+    border-radius: 10px;
     display: flex;
     padding-right: 2.5rem;
     flex-direction: column;
     width: 40rem;
-
+    legend {
+      font-weight: bold;
+    }
     input {
       width: 100%;
       border-radius: 5px;
@@ -61,6 +68,7 @@ export const PizarraScreen = ({ match }) => {
     puntos: playId ? play.valorDelPuntoPorDefecto : 0,
     jugadorAsistente: playId ? play.posicionAsistente : '',
     jugadorTirador: playId ? play.posicionTirador : '',
+    urlFoto: playId ? play.urlFoto : '',
   });
   const [urlJugada, setUrlJugada] = useState(
     playId ? play.urlDeLaJugadaGuardada : ''
@@ -138,6 +146,7 @@ export const PizarraScreen = ({ match }) => {
             asistente: jugadorAsistente,
             valor: puntos,
             urlJugada,
+            urlFoto,
           },
           playId
         )
@@ -150,6 +159,7 @@ export const PizarraScreen = ({ match }) => {
           asistente: jugadorAsistente,
           valor: puntos,
           urlJugada,
+          urlFoto,
         })
       );
     }
@@ -157,8 +167,13 @@ export const PizarraScreen = ({ match }) => {
     console.log(values);
   };
 
+  const handlePictureClick = (e) => {
+    e.preventDefault();
+    document.querySelector('#fileSelector').click();
+  };
+
   return (
-    <Layout showGoBack>
+    <>
       <Pizarra
         stopRecording={stopRecording}
         startRecording={startRecording}
@@ -301,6 +316,15 @@ export const PizarraScreen = ({ match }) => {
                 onChange={handleInputChange}
                 checked={jugadorAsistente === 'AP'}
               ></input>
+              <input
+                id='fileSelector'
+                type='file'
+                name='urlFoto'
+                style={{ display: 'none' }}
+                onChange={handleInputChange}
+              />
+
+              <button onClick={handlePictureClick}>Picture</button>
             </div>
             <button type='submit'>
               {playId ? 'Editar Jugada' : 'Agregar jugada'}
@@ -308,6 +332,6 @@ export const PizarraScreen = ({ match }) => {
           </fieldset>
         </FormStyle>
       </PizarraScreenStyles>
-    </Layout>
+    </>
   );
 };

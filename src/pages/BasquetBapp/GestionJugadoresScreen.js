@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Player } from '../../components/Player';
 import { Message } from '../../components/Message';
 import { CenterLoading } from '../../components/CenterLoading';
+import { Redirect } from 'react-router-dom';
 
 const GestionStyles = styled.div`
   margin: 6rem auto;
@@ -16,15 +17,21 @@ const GestionStyles = styled.div`
   color: #fff;
 `;
 
-export const GestionJugadoresScreen = () => {
+export const GestionJugadoresScreen = ({ history }) => {
   const dispatch = useDispatch();
   const { players, loading, error, success } = useSelector(
     (state) => state.players
   );
 
+  const { user, loading: userLoading } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    dispatch(getPlayers());
-  }, [dispatch, success]);
+    if (user && user.tipo !== 'asistente') {
+      history.push('/');
+    } else {
+      dispatch(getPlayers());
+    }
+  }, [dispatch, success, user]);
 
   return (
     <Layout showGoBack>
