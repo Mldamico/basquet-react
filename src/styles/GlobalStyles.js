@@ -40,12 +40,12 @@ const GlobalStyles = createGlobalStyle`
   }
   a {
     text-decoration: none;
-    color: var(----black);
+    color: var(--white);
   }
 
-  a:hover {
+  /* a:hover {
     text-decoration: underline;
-  }
+  } */
 
   input {
     outline: none;
