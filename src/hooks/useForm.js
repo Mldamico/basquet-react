@@ -21,6 +21,7 @@ export const useForm = (initialState = {}) => {
   };
   const handlePictureUpload = async (target) => {
     const file = target.files[0];
+
     if (file) {
       Swal.fire({
         title: 'Uploading',

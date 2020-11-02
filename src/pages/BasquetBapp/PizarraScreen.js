@@ -74,7 +74,7 @@ export const PizarraScreen = ({ match }) => {
     playId ? play.urlDeLaJugadaGuardada : ''
   );
 
-  const { nombre, puntos, jugadorAsistente, jugadorTirador } = values;
+  const { nombre, puntos, jugadorAsistente, jugadorTirador, urlFoto } = values;
 
   useEffect(() => {
     if (playId) {
@@ -134,35 +134,35 @@ export const PizarraScreen = ({ match }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (record) {
-      await guardar();
-    }
-    if (playId) {
-      dispatch(
-        editPlay(
-          {
-            nombreJugada: nombre,
-            tirador: jugadorTirador,
-            asistente: jugadorAsistente,
-            valor: puntos,
-            urlJugada,
-            urlFoto,
-          },
-          playId
-        )
-      );
-    } else {
-      dispatch(
-        createPlay({
-          nombreJugada: nombre,
-          tirador: jugadorTirador,
-          asistente: jugadorAsistente,
-          valor: puntos,
-          urlJugada,
-          urlFoto,
-        })
-      );
-    }
+    // if (record) {
+    //   await guardar();
+    // }
+    // if (playId) {
+    //   dispatch(
+    //     editPlay(
+    //       {
+    //         nombreJugada: nombre,
+    //         tirador: jugadorTirador,
+    //         asistente: jugadorAsistente,
+    //         valor: puntos,
+    //         urlJugada,
+    //         urlFoto,
+    //       },
+    //       playId
+    //     )
+    //   );
+    // } else {
+    //   dispatch(
+    //     createPlay({
+    //       nombreJugada: nombre,
+    //       tirador: jugadorTirador,
+    //       asistente: jugadorAsistente,
+    //       valor: puntos,
+    //       urlJugada,
+    //       urlFoto,
+    //     })
+    //   );
+    // }
 
     console.log(values);
   };
@@ -209,7 +209,7 @@ export const PizarraScreen = ({ match }) => {
                 name='puntos'
                 value={2}
                 onChange={handleInputChange}
-                checked={puntos === 2}
+                checked={puntos === '2'}
               />
               <label htmlFor='triple'>Triple</label>
               <input
@@ -218,7 +218,7 @@ export const PizarraScreen = ({ match }) => {
                 name='puntos'
                 value={3}
                 onChange={handleInputChange}
-                checked={puntos === 3}
+                checked={puntos === '3'}
               ></input>
             </div>
             <h3>Jugador Tirador</h3>
