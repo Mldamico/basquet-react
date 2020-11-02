@@ -6,15 +6,32 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { CenterLoading } from '../../components/CenterLoading';
 import Unknown from '../../assets/unknown.jpg';
+import Ball from '../../assets/ball.webp';
 import { logout } from '../../store/actions/authActions';
 const HomeStyles = styled.div`
   height: 100vh;
-  background-image: url('/ball.webp');
+  /* background-image: url('/ball.webp');
   background-size: 25%;
   background-repeat: no-repeat;
-  background-position: 50% 60%;
+  background-position: 50% 60%; */
   position: relative;
 
+  .centered {
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+
+    img {
+      transition: 1s all ease-in-out;
+      width: 50%;
+    }
+
+    img:hover {
+      transform: rotate(360deg);
+    }
+  }
   .user-data {
     position: absolute;
     background-color: var(--red);
@@ -149,6 +166,9 @@ export const HomeScreen = () => {
             </div>
             <h4>{user.usuario}</h4>
             <p>{user.tipo}</p>
+          </div>
+          <div className='centered'>
+            <img src={Ball} />
           </div>
           <div className='first'>
             <Link to='/jugadas'>
