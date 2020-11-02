@@ -47,6 +47,10 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: underline;
   }
 
+  input {
+    outline: none;
+  }
+
   /* Scrollbar Styles */
   body::-webkit-scrollbar {
     width: 12px;
