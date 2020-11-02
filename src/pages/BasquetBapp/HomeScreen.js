@@ -3,9 +3,10 @@ import { Layout } from '../../components/Layout';
 import styled from 'styled-components';
 import { Title } from '../../components/Title';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CenterLoading } from '../../components/CenterLoading';
 import Unknown from '../../assets/unknown.jpg';
+import { logout } from '../../store/actions/authActions';
 const HomeStyles = styled.div`
   height: 100vh;
   background-image: url('/ball.webp');
@@ -110,16 +111,34 @@ const HomeStyles = styled.div`
     top: 71%;
     left: 63%;
   }
+  .logout-button {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background-color: var(--red);
+    color: #fff;
+    padding: 0.5rem;
+    font-weight: bold;
+    font-size: 1.6rem;
+  }
 `;
 
 export const HomeScreen = () => {
+  const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
   return (
     <Layout>
       {loading ? (
         <CenterLoading />
       ) : (
         <HomeStyles>
+          <button className='logout-button' onClick={logoutHandler}>
+            LOGOUT
+          </button>
           <Title size={7}>BASQUETBAPP</Title>
           <div className='user-data'>
             <div>
@@ -144,7 +163,7 @@ export const HomeScreen = () => {
             </Link>
           </div>
           <div className='third'>
-            <Link to='/datos'>
+            <Link to='/tomardatos'>
               <i className='far fa-clipboard'></i>
               <p>Tomar Datos</p>
             </Link>
