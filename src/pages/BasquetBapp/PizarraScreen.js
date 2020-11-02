@@ -158,7 +158,7 @@ export const PizarraScreen = ({ match }) => {
   };
 
   return (
-    <Layout>
+    <Layout showGoBack>
       <Pizarra
         stopRecording={stopRecording}
         startRecording={startRecording}

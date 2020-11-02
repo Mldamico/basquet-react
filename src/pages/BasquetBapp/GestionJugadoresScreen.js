@@ -25,7 +25,7 @@ export const GestionJugadoresScreen = () => {
   }, [dispatch, success]);
 
   return (
-    <Layout>
+    <Layout showGoBack>
       {loading ? (
         <CenterLoading loading={loading} />
       ) : (

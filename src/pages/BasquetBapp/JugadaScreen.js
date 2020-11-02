@@ -55,7 +55,7 @@ export const JugadaScreen = ({ match, history }) => {
     getUrl();
   }, [dispatch, urlDeLaJugadaGuardada, playId]);
   return (
-    <Layout>
+    <Layout showGoBack>
       {loading ? (
         <CenterLoading />
       ) : (

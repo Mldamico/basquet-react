@@ -35,7 +35,7 @@ export const JugadasScreen = () => {
   }, [dispatch]);
 
   return (
-    <Layout>
+    <Layout showGoBack>
       {loading ? (
         <CenterLoading />
       ) : (

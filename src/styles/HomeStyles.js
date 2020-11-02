@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const HomeStyles = styled.div`
   height: 100vh;
-  position: relative;
 
   .centered {
     position: fixed;
@@ -114,15 +113,5 @@ export const HomeStyles = styled.div`
     position: fixed;
     top: 71%;
     left: 63%;
-  }
-  .logout-button {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    background-color: var(--red);
-    color: #fff;
-    padding: 0.5rem;
-    font-weight: bold;
-    font-size: 1.6rem;
   }
 `;

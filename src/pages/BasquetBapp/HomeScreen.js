@@ -2,28 +2,21 @@ import React from 'react';
 import { Layout } from '../../components/Layout';
 import { Title } from '../../components/Title';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CenterLoading } from '../../components/CenterLoading';
 import Unknown from '../../assets/unknown.jpg';
 import Ball from '../../assets/ball.webp';
-import { logout } from '../../store/actions/authActions';
 import { HomeStyles } from '../../styles/HomeStyles';
+
 export const HomeScreen = () => {
-  const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
   return (
     <Layout>
       {loading ? (
         <CenterLoading />
       ) : (
         <HomeStyles>
-          <button className='logout-button' onClick={logoutHandler}>
-            LOGOUT
-          </button>
           <Title size={7}>BASQUETBAPP</Title>
           <div className='user-data'>
             <div>
