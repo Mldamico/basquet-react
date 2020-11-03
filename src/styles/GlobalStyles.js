@@ -7,7 +7,7 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #fff;
     --grey: #efefef;
-    --red-danger: #d9534f
+    --red-danger: #d9534f;
   }
   html {
     font-size: 10px;
