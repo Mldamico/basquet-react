@@ -12,6 +12,8 @@ const DatosContainer = styled.div`
   background-color: var(--red);
   width: 80%;
   margin: 15rem auto;
+  border-radius: 10px;
+  border: 1px solid #fff;
 
   .column__container {
     display: flex;
@@ -21,6 +23,8 @@ const DatosContainer = styled.div`
   }
 
   .droppable__column {
+    border: 1px solid #fff;
+    border-radius: 10px;
   }
 
   .draggable {
@@ -42,7 +46,8 @@ const DatosContainer = styled.div`
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
-  if (source.droppableId !== destination) {
+
+  if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns[source.droppableId];
     const destColumn = columns[destination.droppableId];
     const sourceItems = [...sourceColumn.items];
