@@ -3,26 +3,52 @@ import { Droppable, DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout } from '../../components/Layout';
 import { getPlayers } from '../../store/actions/playersActions';
-import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 import Unknown from '../../assets/unknown.jpg';
 import { CenterLoading } from '../../components/CenterLoading';
 import { Title } from '../../components/Title';
-const DatosContainer = styled.div`
-  display: flex;
-  justify-content: center;
+
+const DatosContainer = styled.form`
+  padding-top: 5rem;
   background-color: var(--red);
   width: 80%;
   margin: 5rem auto;
   border-radius: 10px;
   border: 1px solid #fff;
   color: #fff;
+  label {
+    font-size: 2.5rem;
+  }
+  input {
+    outline: none;
+    border-radius: 5px;
+    border: 0;
+    display: block;
+    margin: 1rem auto 0;
+    width: 50%;
+    padding: 1rem;
+  }
+  button {
+    margin-top: 1rem;
+    padding: 1.5rem;
+
+    background-color: var(--yellow);
+
+    &:disabled {
+      background-color: #000;
+    }
+  }
+`;
+
+const DragAndDropStyles = styled.div`
+  display: flex;
+  justify-content: center;
 
   .column__container {
     display: flex;
     flex-direction: column;
 
-    margin: 3rem;
+    margin: 1rem 2rem;
     width: 100%;
   }
 
@@ -92,12 +118,13 @@ export const TomarDatosScreen = ({ history }) => {
   const { players, loading, error, success } = useSelector(
     (state) => state.players
   );
+  const [rival, setRival] = useState('');
   const [columns, setColumns] = useState({
-    [uuid()]: {
+    plantel: {
       name: 'Plantel',
       items: players,
     },
-    [uuid()]: {
+    convocados: {
       name: 'Convocados',
       items: [],
     },
@@ -105,13 +132,16 @@ export const TomarDatosScreen = ({ history }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  // useEffect(() => {
-  //   // if (user && user.tipo !== 'asistente') {
-  //   //   history.push('/');
-  //   // } else {
-  //   // }
-  //   dispatch(getPlayers());
-  // }, [dispatch]);
+  useEffect(() => {
+    // if (user && user.tipo !== 'asistente') {
+    //   history.push('/');
+    // } else {
+    // }
+    dispatch(getPlayers());
+    if (success) {
+      setColumns((columns['plantel'].items = players));
+    }
+  }, [dispatch, success]);
 
   const dragEnd = () => {};
   return (
@@ -121,86 +151,111 @@ export const TomarDatosScreen = ({ history }) => {
       ) : (
         <>
           <Title size={6}>TOMAR DATOS</Title>
-          <DatosContainer>
-            <DragDropContext
-              onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-            >
-              {Object.entries(columns).map(([id, column]) => {
-                return (
-                  <div className='column__container' key={id}>
-                    <h2>{column.name}</h2>
-                    <div style={{ margin: 8 }}>
-                      <Droppable droppableId={id} key={id}>
-                        {(provided, snapshot) => {
-                          return (
-                            <div
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                              className='droppable__column'
-                              style={{
-                                background: snapshot.isDraggingOver
-                                  ? '#fff'
-                                  : '#ffc600',
-                                padding: 4,
-                              }}
-                            >
-                              {column.items.map((item, index) => {
-                                return (
-                                  <Draggable
-                                    key={item.id}
-                                    draggableId={item.id.toString()}
-                                    index={index}
-                                  >
-                                    {(provided, snapshot) => {
-                                      return (
-                                        <div
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          className='draggable'
-                                          style={{
-                                            userSelect: 'none',
-                                            padding: 16,
-                                            backgroundColor: snapshot.isDragging
-                                              ? '#d9534f'
-                                              : '#ffc600',
-                                            color: '#fff',
-                                            ...provided.draggableProps.style,
-                                          }}
-                                        >
-                                          <div className='description'>
-                                            <img
-                                              src={
-                                                item.urlFoto
-                                                  ? item.urlFoto
-                                                  : Unknown
-                                              }
-                                              alt={item.nombre}
-                                              style={{ width: 50 }}
-                                            />
-                                          </div>
-                                          <div className='description'>
-                                            <p>
-                                              {item.nombre} {item.apellido}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      );
-                                    }}
-                                  </Draggable>
-                                );
-                              })}
-                              {provided.placeholder}
-                            </div>
-                          );
-                        }}
-                      </Droppable>
-                    </div>
-                  </div>
-                );
-              })}
-            </DragDropContext>
-          </DatosContainer>
+          {players ? (
+            <DatosContainer>
+              <div>
+                <label htmlFor='date'>Rival</label>
+                <input
+                  value={rival}
+                  onChange={(e) => setRival(e.target.value)}
+                  id='date'
+                  type='text'
+                />
+              </div>
+              <div>
+                <button
+                  disabled={
+                    columns['convocados'].items.length < 5 || rival.length < 3
+                  }
+                >
+                  INICIAR PARTIDO
+                </button>
+              </div>
+              <DragAndDropStyles>
+                <DragDropContext
+                  onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+                >
+                  {Object.entries(columns).map(([id, column]) => {
+                    return (
+                      <div className='column__container' key={id}>
+                        <h2>{column.name}</h2>
+                        <div style={{ margin: 8 }}>
+                          <Droppable droppableId={id} key={id}>
+                            {(provided, snapshot) => {
+                              return (
+                                <div
+                                  {...provided.droppableProps}
+                                  ref={provided.innerRef}
+                                  className='droppable__column'
+                                  style={{
+                                    background: snapshot.isDraggingOver
+                                      ? '#fff'
+                                      : '#ffc600',
+                                    padding: 4,
+                                  }}
+                                >
+                                  {column.items.map((item, index) => {
+                                    return (
+                                      <Draggable
+                                        key={item.id}
+                                        draggableId={item.id.toString()}
+                                        index={index}
+                                      >
+                                        {(provided, snapshot) => {
+                                          return (
+                                            <div
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              className='draggable'
+                                              style={{
+                                                userSelect: 'none',
+                                                padding: 16,
+                                                backgroundColor: snapshot.isDragging
+                                                  ? '#d9534f'
+                                                  : '#ffc600',
+                                                color: '#fff',
+                                                ...provided.draggableProps
+                                                  .style,
+                                              }}
+                                            >
+                                              <div className='description'>
+                                                <img
+                                                  src={
+                                                    item.urlFoto
+                                                      ? item.urlFoto
+                                                      : Unknown
+                                                  }
+                                                  alt={item.nombre}
+                                                  style={{ width: 50 }}
+                                                />
+                                              </div>
+                                              <div className='description'>
+                                                <p>
+                                                  {item.nombre} {item.apellido}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          );
+                                        }}
+                                      </Draggable>
+                                    );
+                                  })}
+                                  {provided.placeholder}
+                                </div>
+                              );
+                            }}
+                          </Droppable>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </DragDropContext>
+              </DragAndDropStyles>
+            </DatosContainer>
+          ) : (
+            ''
+          )}
         </>
       )}
     </Layout>

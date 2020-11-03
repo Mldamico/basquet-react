@@ -14,7 +14,7 @@ export const HomeScreen = () => {
   const { user, loading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getPlayers());
+    // dispatch(getPlayers());
   }, [dispatch]);
 
   return (
