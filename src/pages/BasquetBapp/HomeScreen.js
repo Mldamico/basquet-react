@@ -2,14 +2,20 @@ import React from 'react';
 import { Layout } from '../../components/Layout';
 import { Title } from '../../components/Title';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CenterLoading } from '../../components/CenterLoading';
 import Unknown from '../../assets/unknown.jpg';
 import Ball from '../../assets/ball.webp';
 import { HomeStyles } from '../../styles/HomeStyles';
+import { useEffect } from 'react';
+import { getPlayers } from '../../store/actions/playersActions';
 
 export const HomeScreen = () => {
   const { user, loading, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPlayers());
+  }, [dispatch]);
 
   return (
     <Layout>

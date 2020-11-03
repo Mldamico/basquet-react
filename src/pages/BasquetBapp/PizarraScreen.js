@@ -56,7 +56,7 @@ const FormStyle = styled.form`
   }
 `;
 
-export const PizarraScreen = ({ match }) => {
+export const PizarraScreen = ({ match, history }) => {
   const playId = match.params.id;
   const { play } = useSelector((state) => state.play);
   const dispatch = useDispatch();
@@ -134,35 +134,35 @@ export const PizarraScreen = ({ match }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (record) {
-    //   await guardar();
-    // }
-    // if (playId) {
-    //   dispatch(
-    //     editPlay(
-    //       {
-    //         nombreJugada: nombre,
-    //         tirador: jugadorTirador,
-    //         asistente: jugadorAsistente,
-    //         valor: puntos,
-    //         urlJugada,
-    //         urlFoto,
-    //       },
-    //       playId
-    //     )
-    //   );
-    // } else {
-    //   dispatch(
-    //     createPlay({
-    //       nombreJugada: nombre,
-    //       tirador: jugadorTirador,
-    //       asistente: jugadorAsistente,
-    //       valor: puntos,
-    //       urlJugada,
-    //       urlFoto,
-    //     })
-    //   );
-    // }
+    if (record) {
+      await guardar();
+    }
+    if (playId) {
+      dispatch(
+        editPlay(
+          {
+            nombreJugada: nombre,
+            tirador: jugadorTirador,
+            asistente: jugadorAsistente,
+            valor: puntos,
+            urlJugada,
+            urlFoto,
+          },
+          playId
+        )
+      );
+    } else {
+      dispatch(
+        createPlay({
+          nombreJugada: nombre,
+          tirador: jugadorTirador,
+          asistente: jugadorAsistente,
+          valor: puntos,
+          urlJugada,
+          urlFoto,
+        })
+      );
+    }
 
     console.log(values);
   };
@@ -316,6 +316,8 @@ export const PizarraScreen = ({ match }) => {
                 onChange={handleInputChange}
                 checked={jugadorAsistente === 'AP'}
               ></input>
+            </div>
+            <div>
               <input
                 id='fileSelector'
                 type='file'
@@ -324,13 +326,16 @@ export const PizarraScreen = ({ match }) => {
                 onChange={handleInputChange}
               />
 
-              <button onClick={handlePictureClick}>Picture</button>
+              <button style={{ width: '100%' }} onClick={handlePictureClick}>
+                Subir Imagen
+              </button>
             </div>
             <button type='submit'>
               {playId ? 'Editar Jugada' : 'Agregar jugada'}
             </button>
           </fieldset>
         </FormStyle>
+        <button onClick={() => history.goBack()}>Volver</button>
       </PizarraScreenStyles>
     </>
   );
