@@ -9,21 +9,52 @@ import { LoginStyles } from '../../styles/LoginStyles';
 import { Message } from '../../components/Message';
 import { override } from '../../styles/PropagateLoaderOverride';
 import { Title } from '../../components/Title';
+import { useFormik } from 'formik';
+
+const validate = (values) => {
+  const errors = {};
+  if (!values.username) {
+    errors.username = 'Required';
+  } else if (values.username.length < 3) {
+    errors.username = 'Must be 3 characters or less';
+  }
+
+  if (!values.password) {
+    errors.password = 'Required';
+  } else if (values.password.length < 4) {
+    errors.password = 'Must be 4 characters or less';
+  }
+
+  return errors;
+};
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-  const [values, handleInputChange] = useForm({
-    username: '',
-    password: '',
+  // const [values, handleInputChange] = useForm({
+  //   username: '',
+  //   password: '',
+  // });
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      console.log(values);
+      console.log(formik);
+      dispatch(login(values));
+    },
   });
-  const submitForm = (e) => {
-    e.preventDefault();
-    console.log(values);
-    dispatch(login(values));
-  };
 
-  const { username, password } = values;
+  // const submitForm = (e) => {
+  //   e.preventDefault();
+  //   console.log(values);
+  //   dispatch(login(values));
+  // };
+
+  // const { username, password } = values;
   return (
     <Layout>
       {loading ? (
@@ -48,7 +79,7 @@ export const LoginScreen = () => {
             <h2>La APP de tu equipo</h2>
           </div>
 
-          <form onSubmit={submitForm}>
+          <form onSubmit={formik.handleSubmit}>
             <fieldset>
               <legend>Iniciar Sesion</legend>
               <label htmlFor='username'>Usuario</label>
@@ -56,17 +87,25 @@ export const LoginScreen = () => {
                 type='text'
                 name='username'
                 id='username'
-                value={username}
-                onChange={handleInputChange}
+                value={formik.values.username}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
               />
+              {formik.touched.username && formik.errors.username ? (
+                <div>{formik.errors.username}</div>
+              ) : null}
               <label htmlFor='password'>Password</label>
               <input
                 type='password'
                 name='password'
                 id='password'
-                value={password}
-                onChange={handleInputChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
               />
+              {formik.touched.password && formik.errors.password ? (
+                <div>{formik.errors.password}</div>
+              ) : null}
               <div className='buttonContainer'>
                 <button className='btn' type='submit'>
                   Login

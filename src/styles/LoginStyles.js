@@ -87,6 +87,10 @@ export const LoginStyles = styled.div`
           background-color: var(--yellow);
           border: 1px solid var(--white);
         }
+
+        button:disabled {
+          background-color: #000;
+        }
       }
     }
   }
