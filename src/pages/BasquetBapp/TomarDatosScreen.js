@@ -154,11 +154,11 @@ export const TomarDatosScreen = ({ history }) => {
           {players ? (
             <DatosContainer>
               <div>
-                <label htmlFor='date'>Rival</label>
+                <label htmlFor='rival'>Rival</label>
                 <input
                   value={rival}
                   onChange={(e) => setRival(e.target.value)}
-                  id='date'
+                  id='rival'
                   type='text'
                 />
               </div>

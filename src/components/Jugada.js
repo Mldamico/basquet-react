@@ -75,7 +75,10 @@ export const Jugada = ({ play }) => {
         <h2>{play.nombreDeLaJugada}</h2>
       </Link>
       {!play.image ? (
-        <img src={`assets/jugada2.jpeg`} alt={play.nombreDeLaJugada} />
+        <img
+          src={play.urlFoto ? play.urlFoto : `assets/jugada2.jpeg`}
+          alt={play.nombreDeLaJugada}
+        />
       ) : (
         <img src={play.image} alt={play.nombreDeLaJugada} />
       )}
