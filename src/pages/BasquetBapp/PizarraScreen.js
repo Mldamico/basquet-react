@@ -1,60 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Layout } from '../../components/Layout';
-import styled from 'styled-components';
+import Swal from 'sweetalert2';
 import RecordRTC from 'recordrtc';
 import { Pizarra } from '../../components/Pizarra';
 import { storage } from '../../firebase/firebase';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
+import { PizarraScreenStyles, FormStyle } from '../../styles/PizarraStyles';
 import {
   createPlay,
   editPlay,
   getPlayById,
 } from '../../store/actions/playActions';
-const PizarraScreenStyles = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  button {
-    margin: 2rem;
-  }
-`;
-
-const FormStyle = styled.form`
-  button {
-    margin-top: 2rem;
-    background-color: var(--yellow);
-  }
-  display: flex;
-  flex-direction: column;
-  fieldset {
-    border: 1px solid #fff;
-    background-color: var(--red);
-    color: #fff;
-    border-radius: 10px;
-    display: flex;
-    padding-right: 2.5rem;
-    flex-direction: column;
-    width: 40rem;
-    legend {
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      border-radius: 5px;
-      margin: 0.5rem 0;
-      padding: 0.5rem 0.5rem 1rem;
-      border: 0.5px solid var(--black);
-    }
-    div {
-      display: flex;
-    }
-    div:first-child {
-      flex-direction: column;
-    }
-  }
-`;
 
 export const PizarraScreen = ({ match, history }) => {
   const playId = match.params.id;
@@ -134,6 +90,14 @@ export const PizarraScreen = ({ match, history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    Swal.fire({
+      title: 'Guardando Video',
+      text: 'Espere...',
+      allowOutsideClick: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
     if (record) {
       await guardar();
     }
@@ -163,7 +127,7 @@ export const PizarraScreen = ({ match, history }) => {
         })
       );
     }
-
+    Swal.close();
     console.log(values);
   };
 
@@ -335,7 +299,7 @@ export const PizarraScreen = ({ match, history }) => {
             </button>
           </fieldset>
         </FormStyle>
-        <button onClick={() => history.goBack()}>Volver</button>
+        <button onClick={() => history.push('/jugadas')}>Volver</button>
       </PizarraScreenStyles>
     </>
   );
