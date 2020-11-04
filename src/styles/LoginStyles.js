@@ -66,7 +66,7 @@ export const LoginStyles = styled.div`
       input {
         width: 100%;
         border-radius: 5px;
-        margin: 1rem 0;
+        margin: 2rem 0 4rem 0;
         padding: 0.5rem 0.5rem 0.5rem;
         border: 0;
         background-color: var(--white);
@@ -89,7 +89,7 @@ export const LoginStyles = styled.div`
         }
 
         button:disabled {
-          background-color: #000;
+          background-color: #d9534f;
         }
       }
     }

@@ -80,11 +80,22 @@ export const LoginScreen = () => {
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
               />
-              {formik.touched.username && formik.errors.username ? (
-                <Message BackgroundColor='#d9534f'>
-                  {formik.errors.username}
-                </Message>
-              ) : null}
+              <div style={{ position: 'relative' }}>
+                {formik.touched.username && formik.errors.username ? (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      right: '-9.5rem',
+                      bottom: '-1.5rem',
+                      width: '20rem',
+                    }}
+                  >
+                    <Message BackgroundColor='#d9534f'>
+                      {formik.errors.username}
+                    </Message>
+                  </div>
+                ) : null}
+              </div>
               <label htmlFor='password'>Password</label>
               <input
                 type='password'
@@ -94,14 +105,28 @@ export const LoginScreen = () => {
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
               />
-              {formik.touched.password && formik.errors.password ? (
-                <Message BackgroundColor='#d9534f'>
-                  {formik.errors.password}
-                </Message>
-              ) : null}
-
+              <div style={{ position: 'relative' }}>
+                {formik.touched.password && formik.errors.password ? (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      right: '-9.5rem',
+                      bottom: '-3rem',
+                      width: '20rem',
+                    }}
+                  >
+                    <Message BackgroundColor='#d9534f'>
+                      {formik.errors.password}
+                    </Message>
+                  </div>
+                ) : null}
+              </div>
               <div className='buttonContainer'>
-                <button className='btn' type='submit'>
+                <button
+                  className='btn'
+                  type='submit'
+                  disabled={!formik.isValid}
+                >
                   Login
                 </button>
               </div>
