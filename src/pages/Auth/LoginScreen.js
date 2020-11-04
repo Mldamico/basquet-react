@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layout } from '../../components/Layout';
-import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/actions/authActions';
 import { Link } from 'react-router-dom';
@@ -16,13 +15,13 @@ const validate = (values) => {
   if (!values.username) {
     errors.username = 'Required';
   } else if (values.username.length < 3) {
-    errors.username = 'Must be 3 characters or less';
+    errors.username = 'Tiene que tener 3 letras minimo.';
   }
 
   if (!values.password) {
     errors.password = 'Required';
   } else if (values.password.length < 4) {
-    errors.password = 'Must be 4 characters or less';
+    errors.password = 'Tiene que tener 4 letras minimo.';
   }
 
   return errors;
@@ -31,10 +30,7 @@ const validate = (values) => {
 export const LoginScreen = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-  // const [values, handleInputChange] = useForm({
-  //   username: '',
-  //   password: '',
-  // });
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -48,13 +44,6 @@ export const LoginScreen = () => {
     },
   });
 
-  // const submitForm = (e) => {
-  //   e.preventDefault();
-  //   console.log(values);
-  //   dispatch(login(values));
-  // };
-
-  // const { username, password } = values;
   return (
     <Layout>
       {loading ? (
@@ -92,7 +81,9 @@ export const LoginScreen = () => {
                 onChange={formik.handleChange}
               />
               {formik.touched.username && formik.errors.username ? (
-                <div>{formik.errors.username}</div>
+                <Message BackgroundColor='#d9534f'>
+                  {formik.errors.username}
+                </Message>
               ) : null}
               <label htmlFor='password'>Password</label>
               <input
@@ -104,8 +95,11 @@ export const LoginScreen = () => {
                 onChange={formik.handleChange}
               />
               {formik.touched.password && formik.errors.password ? (
-                <div>{formik.errors.password}</div>
+                <Message BackgroundColor='#d9534f'>
+                  {formik.errors.password}
+                </Message>
               ) : null}
+
               <div className='buttonContainer'>
                 <button className='btn' type='submit'>
                   Login
