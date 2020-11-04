@@ -56,7 +56,7 @@ export const LoginStyles = styled.div`
       padding: 6rem;
       align-items: center;
       margin: 0 15% 0 35%;
-      border: 1px solid var(--black);
+      border: 1px solid var(--white);
       border-radius: 10px;
       legend {
         text-align: left;
@@ -67,8 +67,9 @@ export const LoginStyles = styled.div`
         width: 100%;
         border-radius: 5px;
         margin: 1rem 0;
-        padding: 0.5rem 0.5rem 1rem;
-        border: 0.5px solid var(--black);
+        padding: 0.5rem 0.5rem 0.5rem;
+        border: 0;
+        background-color: var(--white);
       }
 
       label {
@@ -84,7 +85,7 @@ export const LoginStyles = styled.div`
           margin: 1rem;
           padding: 1rem 5rem;
           background-color: var(--yellow);
-          border: 1px solid var(--black);
+          border: 1px solid var(--white);
         }
       }
     }

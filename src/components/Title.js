@@ -10,6 +10,7 @@ const TitleStyles = styled.div`
     padding: 2rem 6rem;
     font-size: ${(props) => props.size + 'rem' || '1rem'};
     font-family: 'Henny Penny', cursive;
+    border: 1px solid #fff;
   }
 `;
 
