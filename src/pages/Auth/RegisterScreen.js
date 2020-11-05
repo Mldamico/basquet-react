@@ -9,7 +9,10 @@ import { PropagateLoader } from 'react-spinners';
 import { Message } from '../../components/Message';
 import { override } from '../../styles/PropagateLoaderOverride';
 import { Title } from '../../components/Title';
-
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { fileUpload } from '../../helpers/fileUpload';
+import Swal from 'sweetalert2';
 const RegisterStyles = styled.form`
   h2 {
     color: #fff;
@@ -42,6 +45,9 @@ const RegisterStyles = styled.form`
 
     input {
       margin: 0.8rem;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      border: 0;
     }
 
     button {
@@ -68,24 +74,86 @@ export const RegisterScreen = () => {
     fechaNacimiento: '',
     fileUrl: '',
   });
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+      dorsal: 0,
+      altura: 0,
+      nombre: '',
+      apellido: '',
+      dni: 0,
+      fechaNacimiento: '',
+      fileUrl: '',
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, 'Tiene que tener al menos 3 caracteres')
+        .required('Es obligatorio'),
+      password: Yup.string()
+        .min(4, 'Tiene que tener al menos 4 caracteres')
+        .required('Es obligatorio'),
+      confirmPassword: Yup.string()
+        .min(4, 'Tiene que tener al menos 4 caracteres')
+        .required('Es obligatorio'),
+      dorsal: Yup.number()
+        .positive('No puede ser un valor negativo')
+        .max(99, 'No puede ser mayor a 99')
+        .required('Es obligatorio'),
+      altura: Yup.number()
+        .positive('No puede ser un valor negativo')
+        .max(300, 'No puede ser mayor a 300')
+        .required('Es obligatorio'),
+      nombre: Yup.string()
+        .min(3, 'Tiene que tener al menos 3 caracteres')
+        .required('Es obligatorio'),
+      apellido: Yup.string()
+        .min(3, 'Tiene que tener al menos 3 caracteres')
+        .required('Es obligatorio'),
+      dni: Yup.number()
+        .positive('No puede ser un valor negativo')
+        .required('Es obligatorio'),
+      fechaNacimiento: Yup.date(),
+      fileUrl: Yup.string(),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+      console.log(formik);
+      dispatch(register(values));
+    },
+  });
   const submitForm = (e) => {
     e.preventDefault();
     console.log(values);
     dispatch(register(values));
   };
 
-  const {
-    username,
-    password,
-    confirmPassword,
-    dorsal,
-    altura,
-    nombre,
-    apellido,
-    dni,
-    fechaNacimiento,
-    fileUrl,
-  } = values;
+  const { fileUrl } = values;
+
+  const handlePictureUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    if (file) {
+      Swal.fire({
+        title: 'Uploading',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const file_url = await fileUpload(file);
+      console.log(file_url);
+      // setValues({
+      //   ...values,
+      //   [target.name]: fileUrl,
+      // });
+      formik.fileUrl = file_url;
+      Swal.close();
+    }
+  };
 
   const handlePictureClick = (e) => {
     e.preventDefault();
@@ -115,41 +183,88 @@ export const RegisterScreen = () => {
                     type='text'
                     name='username'
                     id='username'
-                    value={username}
-                    onChange={handleInputChange}
+                    value={formik.values.username}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.username && formik.touched.username
+                        ? 'error'
+                        : ''
+                    }
                   />
+                  {formik.errors.username && formik.touched.username ? (
+                    <Message>{formik.errors.username}</Message>
+                  ) : null}
                   <label htmlFor='password'>Password</label>
                   <input
                     type='password'
                     name='password'
                     id='password'
-                    value={password}
-                    onChange={handleInputChange}
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.password && formik.touched.password
+                        ? 'error'
+                        : ''
+                    }
                   />
+                  {formik.errors.password && formik.touched.password ? (
+                    <Message>{formik.errors.password}</Message>
+                  ) : null}
                   <label htmlFor='confirmPassword'>Confirm Password</label>
                   <input
                     type='password'
                     name='confirmPassword'
                     id='confirmPassword'
-                    value={confirmPassword}
-                    onChange={handleInputChange}
+                    value={formik.values.confirmPassword}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.confirmPassword &&
+                      formik.touched.confirmPassword
+                        ? 'error'
+                        : ''
+                    }
                   />
+                  {formik.errors.confirmPassword &&
+                  formik.touched.confirmPassword ? (
+                    <Message>{formik.errors.confirmPassword}</Message>
+                  ) : null}
                   <label htmlFor='nombre'>Nombre</label>
                   <input
                     type='text'
                     name='nombre'
                     id='nombre'
-                    value={nombre}
-                    onChange={handleInputChange}
+                    value={formik.values.nombre}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.nombre && formik.touched.nombre
+                        ? 'error'
+                        : ''
+                    }
                   />
-                  <label htmlFor='nombre'>Apellido</label>
+                  {formik.errors.nombre && formik.touched.nombre ? (
+                    <Message>{formik.errors.nombre}</Message>
+                  ) : null}
+                  <label htmlFor='apellido'>Apellido</label>
                   <input
                     type='text'
                     name='apellido'
                     id='apellido'
-                    value={apellido}
-                    onChange={handleInputChange}
+                    value={formik.values.apellido}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.apellido && formik.touched.apellido
+                        ? 'error'
+                        : ''
+                    }
                   />
+                  {formik.errors.apellido && formik.touched.apellido ? (
+                    <Message>{formik.errors.apellido}</Message>
+                  ) : null}
                 </div>
                 <div className='register__col'>
                   <label htmlFor='dorsal'>Dorsal</label>
@@ -157,40 +272,75 @@ export const RegisterScreen = () => {
                     type='number'
                     name='dorsal'
                     id='dorsal'
-                    value={dorsal}
-                    onChange={handleInputChange}
+                    value={formik.values.dorsal}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.dorsal && formik.touched.dorsal
+                        ? 'error'
+                        : ''
+                    }
                   />
+                  {formik.errors.dorsal && formik.touched.dorsal ? (
+                    <Message>{formik.errors.dorsal}</Message>
+                  ) : null}
                   <label htmlFor='altura'>Altura (CM)</label>
                   <input
                     type='number'
                     name='altura'
                     id='altura'
-                    value={altura}
-                    onChange={handleInputChange}
+                    value={formik.values.altura}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.altura && formik.touched.altura
+                        ? 'error'
+                        : ''
+                    }
                   />
+                  {formik.errors.altura && formik.touched.altura ? (
+                    <div>{formik.errors.altura}</div>
+                  ) : null}
                   <label htmlFor='dni'>DNI</label>
                   <input
                     type='number'
                     name='dni'
                     id='dni'
-                    value={dni}
-                    onChange={handleInputChange}
+                    value={formik.values.dni}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.dni && formik.touched.dni ? 'error' : ''
+                    }
                   />
+                  {formik.errors.dni && formik.touched.dni ? (
+                    <Message>{formik.errors.dni}</Message>
+                  ) : null}
                   <label htmlFor='fechaNacimiento'>Fecha de nacimiento</label>
                   <input
                     type='date'
                     name='fechaNacimiento'
                     id='fechaNacimiento'
-                    value={fechaNacimiento}
-                    onChange={handleInputChange}
+                    value={formik.values.fechaNacimiento}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    className={
+                      formik.errors.fechaNacimiento &&
+                      formik.touched.fechaNacimiento
+                        ? 'error'
+                        : ''
+                    }
                   />
-
+                  {formik.errors.fechaNacimiento &&
+                  formik.touched.fechaNacimiento ? (
+                    <Message>{formik.errors.fechaNacimiento}</Message>
+                  ) : null}
                   <input
                     id='fileSelector'
                     type='file'
                     name='fileUrl'
                     style={{ display: 'none' }}
-                    onChange={handleInputChange}
+                    value={formik.fileUrl}
+                    onChange={handlePictureUpload}
                   />
                   <button
                     className='btn'

@@ -72,6 +72,10 @@ const GlobalStyles = createGlobalStyle`
     max-width: 100%;
   }
 
+  .error {
+    background-color: #d9534f;
+    color: #fff;
+  }
 
 `;
 

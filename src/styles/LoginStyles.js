@@ -8,6 +8,13 @@ export const LoginStyles = styled.div`
   background-repeat: no-repeat;
   background-position: 50% 50%;
   display: flex;
+
+  .error-message {
+    position: absolute;
+    right: -9.5rem;
+    bottom: -1.5rem;
+    width: 20rem;
+  }
   .heading {
     width: 50%;
     color: #fff;

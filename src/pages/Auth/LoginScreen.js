@@ -8,24 +8,8 @@ import { LoginStyles } from '../../styles/LoginStyles';
 import { Message } from '../../components/Message';
 import { override } from '../../styles/PropagateLoaderOverride';
 import { Title } from '../../components/Title';
-import { useFormik } from 'formik';
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.username) {
-    errors.username = 'Required';
-  } else if (values.username.length < 3) {
-    errors.username = 'Tiene que tener 3 letras minimo.';
-  }
-
-  if (!values.password) {
-    errors.password = 'Required';
-  } else if (values.password.length < 4) {
-    errors.password = 'Tiene que tener 4 letras minimo.';
-  }
-
-  return errors;
-};
+import { useFormik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -36,7 +20,14 @@ export const LoginScreen = () => {
       username: '',
       password: '',
     },
-    validate,
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(3, 'Tiene que tener al menos 3 caracteres')
+        .required('Es obligatorio'),
+      password: Yup.string()
+        .min(4, 'Tiene que tener al menos 4 caracteres')
+        .required('Es obligatorio'),
+    }),
     onSubmit: (values) => {
       console.log(values);
       console.log(formik);
@@ -79,17 +70,11 @@ export const LoginScreen = () => {
                 value={formik.values.username}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                className={formik.errors.username ? 'error' : ''}
               />
               <div style={{ position: 'relative' }}>
                 {formik.touched.username && formik.errors.username ? (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      right: '-9.5rem',
-                      bottom: '-1.5rem',
-                      width: '20rem',
-                    }}
-                  >
+                  <div className='error-message'>
                     <Message BackgroundColor='#d9534f'>
                       {formik.errors.username}
                     </Message>
@@ -104,17 +89,11 @@ export const LoginScreen = () => {
                 value={formik.values.password}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                className={formik.errors.password ? 'error' : ''}
               />
               <div style={{ position: 'relative' }}>
                 {formik.touched.password && formik.errors.password ? (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      right: '-9.5rem',
-                      bottom: '-3rem',
-                      width: '20rem',
-                    }}
-                  >
+                  <div className='error-message'>
                     <Message BackgroundColor='#d9534f'>
                       {formik.errors.password}
                     </Message>
