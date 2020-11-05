@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Draggable from 'react-draggable';
 import Cancha from '../assets/cancha.png';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 const PizarraStyled = styled.div`
   display: flex;
   justify-content: center;
@@ -21,7 +20,6 @@ export const Pizarra = ({
   startRecording,
   didStartRecording,
 }) => {
-  let history = useHistory();
   const { user } = useSelector((state) => state.auth);
   const [deltaPosition, setDeltaPosition] = useState({ x: 0, y: 0 });
   const handleEvent = (e, data) => {

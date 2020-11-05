@@ -4,7 +4,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { removePlay } from '../store/actions/playActions';
-import userEvent from '@testing-library/user-event';
 
 const JugadaStyles = styled.div`
   background-color: var(--red);

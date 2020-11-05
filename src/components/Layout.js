@@ -1,5 +1,4 @@
 import React from 'react';
-import { Nav } from './Nav';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/actions/authActions';
@@ -39,7 +38,7 @@ const LayoutStyles = styled.div`
 export const Layout = ({ children, showGoBack }) => {
   let history = useHistory();
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const logoutHandler = () => {
     console.log('ckick');
     dispatch(logout());

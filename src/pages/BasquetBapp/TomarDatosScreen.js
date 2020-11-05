@@ -114,10 +114,8 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-export const TomarDatosScreen = ({ history }) => {
-  const { players, loading, error, success } = useSelector(
-    (state) => state.players
-  );
+export const TomarDatosScreen = () => {
+  const { players, loading, success } = useSelector((state) => state.players);
   const [rival, setRival] = useState('');
   const [columns, setColumns] = useState({
     plantel: {
@@ -130,20 +128,14 @@ export const TomarDatosScreen = ({ history }) => {
     },
   });
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    // if (user && user.tipo !== 'asistente') {
-    //   history.push('/');
-    // } else {
-    // }
     dispatch(getPlayers());
     if (success) {
       setColumns((columns['plantel'].items = players));
     }
-  }, [dispatch, success]);
+  }, [dispatch, success, columns, players]);
 
-  const dragEnd = () => {};
   return (
     <Layout showGoBack>
       {loading ? (

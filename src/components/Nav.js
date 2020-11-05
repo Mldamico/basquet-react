@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../store/actions/authActions';
 const NavStyles = styled.nav`
   h1 {
@@ -31,7 +31,6 @@ const NavStyles = styled.nav`
 `;
 
 export const Nav = () => {
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const logoutUser = () => {
     dispatch(logout());

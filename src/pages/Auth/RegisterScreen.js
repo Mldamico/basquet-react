@@ -106,8 +106,6 @@ export const RegisterScreen = () => {
       fileUrl: Yup.string(),
     }),
     onSubmit: (values) => {
-      console.log(values);
-      console.log(formik);
       dispatch(register(values));
     },
   });
