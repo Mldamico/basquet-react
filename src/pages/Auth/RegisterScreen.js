@@ -1,6 +1,5 @@
 import React from 'react';
 import { Layout } from '../../components/Layout';
-import { useForm } from '../../hooks/useForm';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../store/actions/authActions';
@@ -13,7 +12,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { fileUpload } from '../../helpers/fileUpload';
 import Swal from 'sweetalert2';
-const RegisterStyles = styled.form`
+const RegisterStyles = styled.div`
   h2 {
     color: #fff;
     margin-bottom: 3rem;
@@ -62,18 +61,6 @@ const RegisterStyles = styled.form`
 export const RegisterScreen = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-  const [values, handleInputChange] = useForm({
-    username: '',
-    password: '',
-    confirmPassword: '',
-    dorsal: 0,
-    altura: 0,
-    nombre: '',
-    apellido: '',
-    dni: 0,
-    fechaNacimiento: '',
-    fileUrl: '',
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -124,13 +111,6 @@ export const RegisterScreen = () => {
       dispatch(register(values));
     },
   });
-  const submitForm = (e) => {
-    e.preventDefault();
-    console.log(values);
-    dispatch(register(values));
-  };
-
-  const { fileUrl } = values;
 
   const handlePictureUpload = async (e) => {
     const file = e.target.files[0];
@@ -146,11 +126,9 @@ export const RegisterScreen = () => {
       });
       const file_url = await fileUpload(file);
       console.log(file_url);
-      // setValues({
-      //   ...values,
-      //   [target.name]: fileUrl,
-      // });
-      formik.fileUrl = file_url;
+
+      formik.setFieldValue('fileUrl', file_url);
+
       Swal.close();
     }
   };
@@ -173,7 +151,7 @@ export const RegisterScreen = () => {
           <Title size={8}>BASQUETBAPP</Title>
           <h2>Formulario De Registro Nuevo Jugador</h2>
 
-          <form onSubmit={submitForm}>
+          <form onSubmit={formik.handleSubmit}>
             <fieldset>
               <legend>Registrarse</legend>
               <div className='register__container'>
@@ -345,7 +323,7 @@ export const RegisterScreen = () => {
                   <button
                     className='btn'
                     onClick={handlePictureClick}
-                    disabled={fileUrl}
+                    disabled={formik.fileUrl}
                   >
                     SUBIR IMAGEN
                   </button>
@@ -368,81 +346,3 @@ export const RegisterScreen = () => {
     </Layout>
   );
 };
-
-{
-  /* <RegisterStyles onSubmit={submitForm}>
-<fieldset>
-  <legend>Registrarse</legend>
-  <label htmlFor='username'>Usuario</label>
-  <input
-    type='text'
-    name='username'
-    id='username'
-    value={username}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='password'>Password</label>
-  <input
-    type='password'
-    name='password'
-    id='password'
-    value={password}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='confirmPassword'>Confirm Password</label>
-  <input
-    type='password'
-    name='confirmPassword'
-    id='confirmPassword'
-    value={confirmPassword}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='nombre'>Nombre</label>
-  <input
-    type='text'
-    name='nombre'
-    id='nombre'
-    value={nombre}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='nombre'>Apellido</label>
-  <input
-    type='text'
-    name='apellido'
-    id='apellido'
-    value={apellido}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='dorsal'>Dorsal</label>
-  <input
-    type='number'
-    name='dorsal'
-    id='dorsal'
-    value={dorsal}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='dni'>DNI</label>
-  <input
-    type='number'
-    name='dni'
-    id='dni'
-    value={dni}
-    onChange={handleInputChange}
-  />
-  <label htmlFor='fechaNacimiento'>Fecha de nacimiento</label>
-  <input
-    type='date'
-    name='fechaNacimiento'
-    id='fechaNacimiento'
-    value={fechaNacimiento}
-    onChange={handleInputChange}
-  />
-  <div className='buttonContainer'>
-    <button className='btn' type='submit'>
-      Registrarse
-    </button>
-  </div>
-  Ya tiene una cuenta? <Link to='/auth/login'>Iniciar sesion</Link>
-</fieldset>
-</RegisterStyles> */
-}
