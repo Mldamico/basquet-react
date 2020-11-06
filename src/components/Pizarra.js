@@ -9,9 +9,9 @@ const PizarraStyled = styled.div`
 `;
 
 const jugadores = [
-  { id: 1, posicion: 'B', numero: 1, left: -460, top: 10 },
+  { id: 1, posicion: 'BA', numero: 1, left: -460, top: 10 },
   { id: 2, posicion: 'AL', numero: 2, left: -390, top: 10 },
-  { id: 3, posicion: 'E', numero: 3, left: -320, top: 10 },
+  { id: 3, posicion: 'ES', numero: 3, left: -320, top: 10 },
   { id: 4, posicion: 'AP', numero: 4, left: -250, top: 10 },
   { id: 5, posicion: 'P', numero: 5, left: -180, top: 10 },
 ];

@@ -47,7 +47,7 @@ export const Layout = ({ children, showGoBack }) => {
     <>
       <LayoutStyles>
         {showGoBack && (
-          <button className='back-button' onClick={() => history.goBack()}>
+          <button className='back-button' onClick={() => history.push('/')}>
             <i className='fas fa-arrow-left'></i>Volver
           </button>
         )}

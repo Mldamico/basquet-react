@@ -248,7 +248,7 @@ export const PizarraScreen = ({ match, history }) => {
                 name='jugadorTirador'
                 value='B'
                 onChange={formik.handleChange}
-                checked={formik.values.jugadorTirador === 'B'}
+                checked={formik.values.jugadorTirador === 'BA'}
               ></input>
               <label htmlFor='escolta_tirador'>E</label>
               <input
@@ -257,7 +257,7 @@ export const PizarraScreen = ({ match, history }) => {
                 name='jugadorTirador'
                 value='E'
                 onChange={formik.handleChange}
-                checked={formik.values.jugadorTirador === 'E'}
+                checked={formik.values.jugadorTirador === 'ES'}
               ></input>
               <label htmlFor='alero_tirador'>AL</label>
               <input
@@ -296,7 +296,7 @@ export const PizarraScreen = ({ match, history }) => {
                 name='jugadorAsistente'
                 value='B'
                 onChange={formik.handleChange}
-                checked={formik.values.jugadorAsistente === 'B'}
+                checked={formik.values.jugadorAsistente === 'BA'}
               ></input>
               <label htmlFor='escolta'>E</label>
               <input
@@ -305,7 +305,7 @@ export const PizarraScreen = ({ match, history }) => {
                 name='jugadorAsistente'
                 value='E'
                 onChange={formik.handleChange}
-                checked={formik.values.jugadorAsistente === 'E'}
+                checked={formik.values.jugadorAsistente === 'ES'}
               ></input>
               <label htmlFor='alero'>AL</label>
               <input
