@@ -28,11 +28,11 @@ export const PizarraScreen = ({ match, history }) => {
 
   const formik = useFormik({
     initialValues: {
-      nombre: playId ? play.nombreDeLaJugada : '',
-      puntos: playId ? play.valorDelPuntoPorDefecto : 0,
-      jugadorAsistente: playId ? play.posicionAsistente : '',
-      jugadorTirador: playId ? play.posicionTirador : '',
-      urlFoto: playId ? play.urlFoto : '',
+      nombre: '',
+      puntos: 0,
+      jugadorAsistente: '',
+      jugadorTirador: '',
+      urlFoto: '',
     },
     validationSchema: Yup.object({
       nombre: Yup.string()
@@ -86,12 +86,32 @@ export const PizarraScreen = ({ match, history }) => {
       console.log(values);
     },
   });
+  const {
+    nombreDeLaJugada,
+    valorDelPuntoPorDefecto,
+    posicionAsistente,
+    posicionTirador,
+    urlFoto,
+  } = play;
 
   useEffect(() => {
     if (playId) {
       dispatch(getPlayById(playId));
+      formik.setFieldValue('nombre', nombreDeLaJugada);
+      formik.setFieldValue('puntos', valorDelPuntoPorDefecto);
+      formik.setFieldValue('jugadorAsistente', posicionAsistente);
+      formik.setFieldValue('jugadorTirador', posicionTirador);
+      formik.setFieldValue('urlFoto', urlFoto);
     }
-  }, [dispatch, playId]);
+  }, [
+    dispatch,
+    playId,
+    nombreDeLaJugada,
+    valorDelPuntoPorDefecto,
+    posicionAsistente,
+    posicionTirador,
+    urlFoto,
+  ]);
 
   const guardar = async () => {
     const upload = await storage.ref(urlJugada).put(record.blob);
@@ -205,18 +225,18 @@ export const PizarraScreen = ({ match, history }) => {
                 id='doble'
                 type='radio'
                 name='puntos'
-                value={2}
+                value={Number(2)}
                 onChange={formik.handleChange}
-                checked={formik.values.puntos === '2'}
+                checked={formik.values.puntos === 2}
               />
               <label htmlFor='triple'>Triple</label>
               <input
                 id='triple'
                 type='radio'
                 name='puntos'
-                value={3}
+                value={Number(3)}
                 onChange={formik.handleChange}
-                checked={formik.values.puntos === '3'}
+                checked={formik.values.puntos === 3}
               ></input>
             </div>
             <h3>Jugador Tirador</h3>

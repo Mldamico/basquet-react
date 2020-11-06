@@ -87,7 +87,7 @@ export const Jugada = ({ play }) => {
       <p>Puntos: {play.valorDelPuntoPorDefecto}</p>
       <ButtonsStyles>
         <button onClick={() => history.push(`/jugadas/${play.id}`)}>Ver</button>
-        {user.tipo === 'entrenador' && (
+        {user.tipo === 'Entrenador' && (
           <>
             <button onClick={() => history.push(`/pizarra/edit/${play.id}`)}>
               Editar

@@ -42,7 +42,7 @@ export const JugadasScreen = () => {
       ) : (
         <>
           <Search />
-          {user.tipo === 'entrenador' && (
+          {user.tipo === 'Entrenador' && (
             <Button>
               <Link to={'/pizarra'}>Crear nueva Jugada</Link>
             </Button>
