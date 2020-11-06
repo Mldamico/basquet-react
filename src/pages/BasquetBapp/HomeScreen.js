@@ -26,7 +26,9 @@ export const HomeScreen = () => {
               />
             </div>
             <h4>{user.usuario}</h4>
-            <p>{user.tipo}</p>
+            <p>
+              {user.tipo} {user.tipo === 'Entrenador' && `- ${user.matricula}`}
+            </p>
           </div>
           <div className='centered'>
             <img src={Ball} alt='Ball' />

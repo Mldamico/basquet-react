@@ -76,7 +76,6 @@ export const LoginStyles = styled.div`
         margin: 2rem 0 4rem 0;
         padding: 0.5rem 0.5rem 0.5rem;
         border: 0;
-        background-color: var(--white);
       }
 
       label {

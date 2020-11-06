@@ -70,7 +70,11 @@ export const LoginScreen = () => {
                 value={formik.values.username}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                className={formik.errors.username ? 'error' : ''}
+                className={
+                  formik.errors.username && formik.touched.username
+                    ? 'error'
+                    : ''
+                }
               />
               <div style={{ position: 'relative' }}>
                 {formik.touched.username && formik.errors.username ? (
@@ -89,7 +93,11 @@ export const LoginScreen = () => {
                 value={formik.values.password}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                className={formik.errors.password ? 'error' : ''}
+                className={
+                  formik.errors.password && formik.touched.password
+                    ? 'error'
+                    : ''
+                }
               />
               <div style={{ position: 'relative' }}>
                 {formik.touched.password && formik.errors.password ? (
