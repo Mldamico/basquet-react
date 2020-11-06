@@ -3,15 +3,17 @@ import Swal from 'sweetalert2';
 import RecordRTC from 'recordrtc';
 import { Pizarra } from '../../components/Pizarra';
 import { storage } from '../../firebase/firebase';
-import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { PizarraScreenStyles, FormStyle } from '../../styles/PizarraStyles';
+
+import { fileUpload } from '../../helpers/fileUpload';
 import {
   createPlay,
   editPlay,
   getPlayById,
 } from '../../store/actions/playActions';
-
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 export const PizarraScreen = ({ match, history }) => {
   const playId = match.params.id;
   const { play } = useSelector((state) => state.play);
@@ -19,18 +21,71 @@ export const PizarraScreen = ({ match, history }) => {
   const [stream, setStream] = useState();
   const [record, setRecord] = useState();
   const [didStartRecording, setDidStartRecording] = useState(false);
-  const [values, handleInputChange] = useForm({
-    nombre: playId ? play.nombreDeLaJugada : '',
-    puntos: playId ? play.valorDelPuntoPorDefecto : 0,
-    jugadorAsistente: playId ? play.posicionAsistente : '',
-    jugadorTirador: playId ? play.posicionTirador : '',
-    urlFoto: playId ? play.urlFoto : '',
-  });
+
   const [urlJugada, setUrlJugada] = useState(
     playId ? play.urlDeLaJugadaGuardada : ''
   );
 
-  const { nombre, puntos, jugadorAsistente, jugadorTirador, urlFoto } = values;
+  const formik = useFormik({
+    initialValues: {
+      nombre: playId ? play.nombreDeLaJugada : '',
+      puntos: playId ? play.valorDelPuntoPorDefecto : 0,
+      jugadorAsistente: playId ? play.posicionAsistente : '',
+      jugadorTirador: playId ? play.posicionTirador : '',
+      urlFoto: playId ? play.urlFoto : '',
+    },
+    validationSchema: Yup.object({
+      nombre: Yup.string()
+        .min(3, 'Tiene que tener al menos 3 caracteres')
+        .required('Es obligatorio'),
+      puntos: Yup.number().required('Es obligatorio'),
+      jugadorAsistente: Yup.string().required('Es obligatorio'),
+      jugadorTirador: Yup.string().required('Es obligatorio'),
+      urlFoto: Yup.string(),
+    }),
+    onSubmit: async (values) => {
+      console.log(values);
+      Swal.fire({
+        title: 'Guardando Video',
+        text: 'Espere...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      if (record) {
+        await guardar();
+      }
+      if (playId) {
+        dispatch(
+          editPlay(
+            {
+              nombreJugada: values.nombre,
+              tirador: values.jugadorTirador,
+              asistente: values.jugadorAsistente,
+              valor: values.puntos,
+              urlJugada: urlJugada,
+              urlFoto: values.urlFoto,
+            },
+            playId
+          )
+        );
+      } else {
+        dispatch(
+          createPlay({
+            nombreJugada: values.nombre,
+            tirador: values.jugadorTirador,
+            asistente: values.jugadorAsistente,
+            valor: values.puntos,
+            urlJugada,
+            urlFoto: values.urlFoto,
+          })
+        );
+      }
+      Swal.close();
+      console.log(values);
+    },
+  });
 
   useEffect(() => {
     if (playId) {
@@ -88,47 +143,25 @@ export const PizarraScreen = ({ match, history }) => {
     stream.getVideoTracks().forEach((track) => track.stop());
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    Swal.fire({
-      title: 'Guardando Video',
-      text: 'Espere...',
-      allowOutsideClick: false,
-      onBeforeOpen: () => {
-        Swal.showLoading();
-      },
-    });
-    if (record) {
-      await guardar();
+  const handlePictureUpload = async (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    if (file) {
+      Swal.fire({
+        title: 'Uploading',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const file_url = await fileUpload(file);
+      console.log(file_url);
+
+      formik.setFieldValue('urlFoto', file_url);
+
+      Swal.close();
     }
-    if (playId) {
-      dispatch(
-        editPlay(
-          {
-            nombreJugada: nombre,
-            tirador: jugadorTirador,
-            asistente: jugadorAsistente,
-            valor: puntos,
-            urlJugada,
-            urlFoto,
-          },
-          playId
-        )
-      );
-    } else {
-      dispatch(
-        createPlay({
-          nombreJugada: nombre,
-          tirador: jugadorTirador,
-          asistente: jugadorAsistente,
-          valor: puntos,
-          urlJugada,
-          urlFoto,
-        })
-      );
-    }
-    Swal.close();
-    console.log(values);
   };
 
   const handlePictureClick = (e) => {
@@ -150,7 +183,7 @@ export const PizarraScreen = ({ match, history }) => {
           <button onClick={startRecording}>Empezar Grabacion</button>
         )}
 
-        <FormStyle onSubmit={handleSubmit}>
+        <FormStyle onSubmit={formik.handleSubmit}>
           <fieldset>
             <legend>Jugada</legend>
             <h3>Nombre de la jugada</h3>
@@ -159,8 +192,9 @@ export const PizarraScreen = ({ match, history }) => {
                 id='nombre'
                 type='text'
                 name='nombre'
-                value={nombre}
-                onChange={handleInputChange}
+                value={formik.values.nombre}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
                 checked
               />
             </div>
@@ -172,8 +206,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='puntos'
                 value={2}
-                onChange={handleInputChange}
-                checked={puntos === '2'}
+                onChange={formik.handleChange}
+                checked={formik.values.puntos === '2'}
               />
               <label htmlFor='triple'>Triple</label>
               <input
@@ -181,8 +215,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='puntos'
                 value={3}
-                onChange={handleInputChange}
-                checked={puntos === '3'}
+                onChange={formik.handleChange}
+                checked={formik.values.puntos === '3'}
               ></input>
             </div>
             <h3>Jugador Tirador</h3>
@@ -193,8 +227,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorTirador'
                 value='B'
-                onChange={handleInputChange}
-                checked={jugadorTirador === 'B'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorTirador === 'B'}
               ></input>
               <label htmlFor='escolta_tirador'>E</label>
               <input
@@ -202,8 +236,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorTirador'
                 value='E'
-                onChange={handleInputChange}
-                checked={jugadorTirador === 'E'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorTirador === 'E'}
               ></input>
               <label htmlFor='alero_tirador'>AL</label>
               <input
@@ -211,8 +245,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorTirador'
                 value='AL'
-                onChange={handleInputChange}
-                checked={jugadorTirador === 'AL'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorTirador === 'AL'}
               ></input>
               <label htmlFor='pivot_tirador'>P</label>
               <input
@@ -220,8 +254,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorTirador'
                 value='P'
-                onChange={handleInputChange}
-                checked={jugadorTirador === 'P'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorTirador === 'P'}
               ></input>
               <label htmlFor='alaPivot_tirador'>AP</label>
               <input
@@ -229,8 +263,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorTirador'
                 value='AP'
-                onChange={handleInputChange}
-                checked={jugadorTirador === 'AP'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorTirador === 'AP'}
               ></input>
             </div>
             <h3>Jugador Asistente</h3>
@@ -241,8 +275,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorAsistente'
                 value='B'
-                onChange={handleInputChange}
-                checked={jugadorAsistente === 'B'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorAsistente === 'B'}
               ></input>
               <label htmlFor='escolta'>E</label>
               <input
@@ -250,8 +284,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorAsistente'
                 value='E'
-                onChange={handleInputChange}
-                checked={jugadorAsistente === 'E'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorAsistente === 'E'}
               ></input>
               <label htmlFor='alero'>AL</label>
               <input
@@ -259,8 +293,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorAsistente'
                 value='AL'
-                onChange={handleInputChange}
-                checked={jugadorAsistente === 'AL'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorAsistente === 'AL'}
               ></input>
               <label htmlFor='pivot'>P</label>
               <input
@@ -268,8 +302,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorAsistente'
                 value='P'
-                onChange={handleInputChange}
-                checked={jugadorAsistente === 'P'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorAsistente === 'P'}
               ></input>
               <label htmlFor='alaPivot'>AP</label>
               <input
@@ -277,8 +311,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='radio'
                 name='jugadorAsistente'
                 value='AP'
-                onChange={handleInputChange}
-                checked={jugadorAsistente === 'AP'}
+                onChange={formik.handleChange}
+                checked={formik.values.jugadorAsistente === 'AP'}
               ></input>
             </div>
             <div>
@@ -287,7 +321,8 @@ export const PizarraScreen = ({ match, history }) => {
                 type='file'
                 name='urlFoto'
                 style={{ display: 'none' }}
-                onChange={handleInputChange}
+                value={formik.fileUrl}
+                onChange={handlePictureUpload}
               />
 
               <button style={{ width: '100%' }} onClick={handlePictureClick}>
