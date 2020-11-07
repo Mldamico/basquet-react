@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Droppable, DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout } from '../../components/Layout';
-import { getPlayers } from '../../store/actions/playersActions';
 import styled from 'styled-components';
 import Unknown from '../../assets/unknown.jpg';
 import { CenterLoading } from '../../components/CenterLoading';
 import { Title } from '../../components/Title';
-
+import { startMatch } from '../../store/actions/matchActions';
 const DatosContainer = styled.form`
   padding-top: 5rem;
   background-color: var(--red);
@@ -114,8 +113,9 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
-export const TomarDatosScreen = () => {
-  const { players, loading, success } = useSelector((state) => state.players);
+export const TomarDatosScreen = ({ history }) => {
+  const { players, loading } = useSelector((state) => state.players);
+  const { match } = useSelector((state) => state.match);
   const [rival, setRival] = useState('');
   const [columns, setColumns] = useState({
     plantel: {
@@ -130,11 +130,23 @@ export const TomarDatosScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPlayers());
-    if (success) {
-      setColumns((columns['plantel'].items = players));
+    console.log(match.id);
+    if (match.id) {
+      history.push(`/tomardatos/${match.id}`);
     }
-  }, [dispatch, success, columns, players]);
+  }, [match, history]);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(columns['convocados'].items);
+    let jugadoresCitados = [];
+    columns['convocados'].items.forEach((jugador) =>
+      jugadoresCitados.push(jugador.id)
+    );
+    console.log(jugadoresCitados);
+    dispatch(
+      startMatch(rival, new Date().toISOString().slice(0, 10), jugadoresCitados)
+    );
+  };
 
   return (
     <Layout showGoBack>
@@ -144,7 +156,7 @@ export const TomarDatosScreen = () => {
         <>
           <Title size={6}>TOMAR DATOS</Title>
           {players ? (
-            <DatosContainer>
+            <DatosContainer onSubmit={onSubmit}>
               <div>
                 <label htmlFor='rival'>Rival</label>
                 <input
@@ -156,6 +168,7 @@ export const TomarDatosScreen = () => {
               </div>
               <div>
                 <button
+                  type='submit'
                   disabled={
                     columns['convocados'].items.length < 5 || rival.length < 3
                   }
@@ -186,53 +199,55 @@ export const TomarDatosScreen = () => {
                                     padding: 4,
                                   }}
                                 >
-                                  {column.items.map((item, index) => {
-                                    return (
-                                      <Draggable
-                                        key={item.id}
-                                        draggableId={item.id.toString()}
-                                        index={index}
-                                      >
-                                        {(provided, snapshot) => {
-                                          return (
-                                            <div
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                              className='draggable'
-                                              style={{
-                                                userSelect: 'none',
-                                                padding: 16,
-                                                backgroundColor: snapshot.isDragging
-                                                  ? '#d9534f'
-                                                  : '#ffc600',
-                                                color: '#fff',
-                                                ...provided.draggableProps
-                                                  .style,
-                                              }}
-                                            >
-                                              <div className='description'>
-                                                <img
-                                                  src={
-                                                    item.urlFoto
-                                                      ? item.urlFoto
-                                                      : Unknown
-                                                  }
-                                                  alt={item.nombre}
-                                                  style={{ width: 50 }}
-                                                />
+                                  {column.items &&
+                                    column.items.map((item, index) => {
+                                      return (
+                                        <Draggable
+                                          key={item.id}
+                                          draggableId={item.id.toString()}
+                                          index={index}
+                                        >
+                                          {(provided, snapshot) => {
+                                            return (
+                                              <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className='draggable'
+                                                style={{
+                                                  userSelect: 'none',
+                                                  padding: 16,
+                                                  backgroundColor: snapshot.isDragging
+                                                    ? '#d9534f'
+                                                    : '#ffc600',
+                                                  color: '#fff',
+                                                  ...provided.draggableProps
+                                                    .style,
+                                                }}
+                                              >
+                                                <div className='description'>
+                                                  <img
+                                                    src={
+                                                      item.urlFoto
+                                                        ? item.urlFoto
+                                                        : Unknown
+                                                    }
+                                                    alt={item.nombre}
+                                                    style={{ width: 50 }}
+                                                  />
+                                                </div>
+                                                <div className='description'>
+                                                  <p>
+                                                    {item.nombre}{' '}
+                                                    {item.apellido}
+                                                  </p>
+                                                </div>
                                               </div>
-                                              <div className='description'>
-                                                <p>
-                                                  {item.nombre} {item.apellido}
-                                                </p>
-                                              </div>
-                                            </div>
-                                          );
-                                        }}
-                                      </Draggable>
-                                    );
-                                  })}
+                                            );
+                                          }}
+                                        </Draggable>
+                                      );
+                                    })}
                                   {provided.placeholder}
                                 </div>
                               );

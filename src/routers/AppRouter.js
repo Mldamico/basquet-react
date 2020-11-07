@@ -6,6 +6,7 @@ import { GestionJugadoresScreen } from '../pages/BasquetBapp/GestionJugadoresScr
 import { HomeScreen } from '../pages/BasquetBapp/HomeScreen';
 import { JugadaScreen } from '../pages/BasquetBapp/JugadaScreen';
 import { JugadasScreen } from '../pages/BasquetBapp/JugadasScreen';
+import { PartidoScreen } from '../pages/BasquetBapp/PartidoScreen';
 import { PizarraScreen } from '../pages/BasquetBapp/PizarraScreen';
 import { TomarDatosScreen } from '../pages/BasquetBapp/TomarDatosScreen';
 import { AuthRouter } from './AuthRouter';
@@ -71,6 +72,12 @@ export const AppRouter = () => {
             exact
             path='/'
             component={HomeScreen}
+          />
+          <PrivateRoute
+            isAuthenticated={!!user}
+            exact
+            path='/tomardatos/:id'
+            component={PartidoScreen}
           />
           <Redirect to='/auth/login' />
         </Switch>

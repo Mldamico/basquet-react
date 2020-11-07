@@ -22,21 +22,21 @@ export const playersReducer = (
         players: action.payload,
         loading: false,
         error: null,
-        success: null,
+        // success: null,
       };
     case PLAYERS_DEACTIVATE_PLAYER:
       return {
         ...state,
         loading: false,
         error: null,
-        success: true,
+        // success: true,
       };
     case PLAYERS_ACTIVATE_PLAYER:
       return {
         ...state,
         loading: false,
         error: null,
-        success: true,
+        // success: true,
       };
 
     case PLAYERS_ERROR:
