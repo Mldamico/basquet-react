@@ -30,110 +30,14 @@ const PartidoStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  @keyframes spin-right {
-    100% {
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
+    border: 1px solid #fff;
   }
 
-  .co {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 200px;
-    width: 200px;
-    margin-top: -115px;
-    margin-left: -100px;
-    border-color: black;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 50%;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    -webkit-animation: spin-right 1s linear infinite;
-    -moz-animation: spin-right 1s linear infinite;
-    -ms-animation: spin-right 1s linear infinite;
-    -o-animation: spin-right 1s linear infinite;
-    animation: spin-right 1s linear infinite;
+  button:active {
+    background-color: var(--red);
   }
-  .cb {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 200px;
-    width: 200px;
-    margin-top: -115px;
-    margin-left: -100px;
-    border-color: black;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 50%;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    -webkit-animation: spin-right 60s linear infinite;
-    -moz-animation: spin-right 60s linear infinite;
-    -ms-animation: spin-right 60s linear infinite;
-    -o-animation: spin-right 60s linear infinite;
-    animation: spin-right 60s linear infinite;
-  }
-  .cob {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 200px;
-    width: 200px;
-    margin-top: -115px;
-    margin-left: -100px;
-    border-color: black;
-    border-width: 3px;
-    border-style: solid;
-    border-radius: 50%;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    -webkit-animation: spin-right 1s linear infinite;
-    -moz-animation: spin-right 1s linear infinite;
-    -ms-animation: spin-right 1s linear infinite;
-    -o-animation: spin-right 1s linear infinite;
-    animation: spin-right 1s linear infinite;
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
-  }
-  .cbb {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 200px;
-    width: 200px;
-    margin-top: -115px;
-    margin-left: -100px;
-    border-color: #fff;
-    border-width: 3px;
-    border-style: solid;
-    border-radius: 50%;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    -webkit-animation: spin-right 60s linear infinite;
-    -moz-animation: spin-right 60s linear infinite;
-    -ms-animation: spin-right 60s linear infinite;
-    -o-animation: spin-right 60s linear infinite;
-    animation: spin-right 60s linear infinite;
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
+  button:disabled {
+    background-color: var(--black);
   }
 `;
 
@@ -147,6 +51,7 @@ const ChronometterStyles = styled.div`
   height: 20rem;
   border-radius: 50%;
   background-color: var(--yellow);
+  border: 1px solid #fff;
 `;
 
 const renderer = ({ minutes, seconds, completed }) => {
@@ -159,8 +64,8 @@ const renderer = ({ minutes, seconds, completed }) => {
 
 export const PartidoScreen = () => {
   const buttonEl = useRef(null);
-  const [startedTimer, setStartedTimer] = useState(false);
-
+  const [quarter, setQuarter] = useState(4);
+  const [extraTime, setExtraTime] = useState(0);
   const startHandler = () => {
     // console.log(buttonEl.current);
 
@@ -172,25 +77,33 @@ export const PartidoScreen = () => {
     // setStartedTimer(false);
   };
 
+  const increaseQuarter = () => {
+    setQuarter((q) => q + 1);
+  };
+
   return (
     <Layout showGoBack>
       <PartidoStyled>
         <div>
           <Countdown
             ref={buttonEl}
-            date={Date.now() + 600000}
+            date={Date.now() + 10000}
             autoStart={false}
+            quarter={quarter}
             renderer={renderer}
+            onComplete={increaseQuarter}
           />
 
           <div className='button_container'>
-            <button onClick={startHandler}>
+            <button onClick={startHandler} disabled={quarter > 3 + extraTime}>
               <i className='fas fa-play'></i>
             </button>
-            <button onClick={stopHandler}>
+            <button onClick={stopHandler} disabled={quarter > 3 + extraTime}>
               <i className='fas fa-pause'></i>
             </button>
+            <button onClick={() => setExtraTime((e) => e + 1)}>+</button>
           </div>
+          {quarter}
         </div>
       </PartidoStyled>
     </Layout>
