@@ -63,13 +63,25 @@ const ChangesStyles = styled.div`
   .players_list {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid #fff;
     border-radius: 10px;
+    overflow: hidden;
+    p {
+      margin: 0;
+      margin-left: 1rem;
+    }
   }
 
   .player {
     display: flex;
+    align-items: center;
     padding: 2rem;
+  }
+
+  button:disabled {
+    color: #000;
   }
 `;
 
@@ -148,6 +160,8 @@ export const PartidoScreen = () => {
         .filter((suplente) => suplente.id !== jugadorEntrante.id)
         .concat(jugadorSaliente);
     });
+    setJugadorEntrante(undefined);
+    setJugadorSaliente(undefined);
   };
 
   return (
@@ -191,26 +205,40 @@ export const PartidoScreen = () => {
                 alt={titular.nombre}
                 style={{ width: 50 }}
               />
-              <p>{positions[index]}</p>
-              <p>{titular.nombre}</p>
+              <div>
+                <p>{positions[index]}</p>
+                <p>{titular.nombre}</p>
+              </div>
             </div>
           ))}
         </div>
 
+        <button
+          onClick={cambio}
+          style={{ marginTop: '2rem' }}
+          disabled={!jugadorEntrante || !jugadorSaliente}
+        >
+          <i className='fas fa-sync' style={{ fontSize: '5rem' }}></i>
+        </button>
         <h2>Suplentes</h2>
         <div className='players_list'>
           {suplentes.map((suplente) => (
-            <p
+            <div
               key={suplente.id}
-              className={jugadorEntrante === suplente ? 'selected' : ''}
+              className={
+                jugadorEntrante === suplente ? 'player selected' : 'player'
+              }
               onClick={() => setJugadorEntrante(suplente)}
             >
-              {suplente.nombre}
-            </p>
+              <img
+                src={suplente.urlFoto ? suplente.urlFoto : Unknown}
+                alt={suplente.nombre}
+                style={{ width: 50 }}
+              />
+              <p>{suplente.nombre}</p>
+            </div>
           ))}
         </div>
-
-        <button onClick={cambio}>Change</button>
       </ChangesStyles>
     </Layout>
   );
