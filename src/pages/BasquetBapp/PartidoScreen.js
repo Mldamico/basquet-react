@@ -3,6 +3,7 @@ import { Layout } from '../../components/Layout';
 import styled from 'styled-components';
 import Countdown, { zeroPad } from 'react-countdown';
 import { useSelector } from 'react-redux';
+import Unknown from '../../assets/unknown.jpg';
 const ChronoStyles = styled.div`
   display: flex;
   flex-direction: row;
@@ -58,6 +59,18 @@ const ChangesStyles = styled.div`
   .selected {
     background-color: var(--yellow);
   }
+
+  .players_list {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #fff;
+    border-radius: 10px;
+  }
+
+  .player {
+    display: flex;
+    padding: 2rem;
+  }
 `;
 
 const ChronometterStyles = styled.div`
@@ -79,6 +92,14 @@ const renderer = ({ minutes, seconds, completed }) => {
       {zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}
     </ChronometterStyles>
   );
+};
+
+const positions = {
+  0: 'BA',
+  1: 'ES',
+  2: 'AL',
+  3: 'P',
+  4: 'AP',
 };
 
 export const PartidoScreen = () => {
@@ -113,12 +134,14 @@ export const PartidoScreen = () => {
 
   const cambio = () => {
     console.log(jugadorEntrante);
-    setTitulares((titulares) => {
-      return titulares
-        .filter((titular) => {
-          return titular.id !== jugadorSaliente.id;
-        })
-        .concat(jugadorEntrante);
+    const jugadorIndex = titulares.findIndex(
+      (titular) => titular.id === jugadorSaliente.id
+    );
+    console.log(jugadorIndex);
+    setTitulares((titulare) => {
+      titulare.splice(jugadorIndex, 1, jugadorEntrante);
+      console.log(titulare);
+      return titulare;
     });
     setSuplentes((suplentes) => {
       return suplentes
@@ -155,13 +178,22 @@ export const PartidoScreen = () => {
       <ChangesStyles>
         <h2>Titulares</h2>
         <div className='players_list'>
-          {titulares.map((titular) => (
-            <p
-              className={jugadorSaliente === titular ? 'selected' : ''}
+          {titulares.map((titular, index) => (
+            <div
+              key={titular.id}
+              className={
+                jugadorSaliente === titular ? 'player selected' : 'player'
+              }
               onClick={() => setJugadorSaliente(titular)}
             >
-              {titular.nombre}
-            </p>
+              <img
+                src={titular.urlFoto ? titular.urlFoto : Unknown}
+                alt={titular.nombre}
+                style={{ width: 50 }}
+              />
+              <p>{positions[index]}</p>
+              <p>{titular.nombre}</p>
+            </div>
           ))}
         </div>
 
@@ -169,6 +201,7 @@ export const PartidoScreen = () => {
         <div className='players_list'>
           {suplentes.map((suplente) => (
             <p
+              key={suplente.id}
               className={jugadorEntrante === suplente ? 'selected' : ''}
               onClick={() => setJugadorEntrante(suplente)}
             >
