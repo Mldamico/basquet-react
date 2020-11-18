@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Layout } from '../../components/Layout';
 import styled from 'styled-components';
 import Countdown, { zeroPad } from 'react-countdown';
-const PartidoStyled = styled.div`
+import { useSelector } from 'react-redux';
+const ChronoStyles = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -18,6 +19,7 @@ const PartidoStyled = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin: 1rem;
   }
 
   button {
@@ -38,6 +40,23 @@ const PartidoStyled = styled.div`
   }
   button:disabled {
     background-color: var(--black);
+  }
+`;
+
+const ChangesStyles = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--red);
+  margin: 10rem auto;
+  width: 80%;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  color: #fff;
+
+  .selected {
+    background-color: var(--yellow);
   }
 `;
 
@@ -64,8 +83,19 @@ const renderer = ({ minutes, seconds, completed }) => {
 
 export const PartidoScreen = () => {
   const buttonEl = useRef(null);
-  const [quarter, setQuarter] = useState(4);
+  const [quarter, setQuarter] = useState(1);
   const [extraTime, setExtraTime] = useState(0);
+  const [titulares, setTitulares] = useState([]);
+  const [suplentes, setSuplentes] = useState([]);
+  const [jugadorEntrante, setJugadorEntrante] = useState(undefined);
+  const [jugadorSaliente, setJugadorSaliente] = useState(undefined);
+  const { match } = useSelector((state) => state.match);
+
+  const jugadoresCitados = match.jugadoresCitados;
+  useEffect(() => {
+    setTitulares(jugadoresCitados.slice(0, 5));
+    setSuplentes(jugadoresCitados.slice(5));
+  }, [jugadoresCitados]);
   const startHandler = () => {
     // console.log(buttonEl.current);
 
@@ -81,10 +111,27 @@ export const PartidoScreen = () => {
     setQuarter((q) => q + 1);
   };
 
+  const cambio = () => {
+    console.log(jugadorEntrante);
+    setTitulares((titulares) => {
+      return titulares
+        .filter((titular) => {
+          return titular.id !== jugadorSaliente.id;
+        })
+        .concat(jugadorEntrante);
+    });
+    setSuplentes((suplentes) => {
+      return suplentes
+        .filter((suplente) => suplente.id !== jugadorEntrante.id)
+        .concat(jugadorSaliente);
+    });
+  };
+
   return (
     <Layout showGoBack>
-      <PartidoStyled>
+      <ChronoStyles>
         <div>
+          <p>Cuarto: {quarter}</p>
           <Countdown
             ref={buttonEl}
             date={Date.now() + 10000}
@@ -95,17 +142,43 @@ export const PartidoScreen = () => {
           />
 
           <div className='button_container'>
-            <button onClick={startHandler} disabled={quarter > 3 + extraTime}>
+            <button onClick={startHandler} disabled={quarter > 4 + extraTime}>
               <i className='fas fa-play'></i>
             </button>
-            <button onClick={stopHandler} disabled={quarter > 3 + extraTime}>
+            <button onClick={stopHandler} disabled={quarter > 4 + extraTime}>
               <i className='fas fa-pause'></i>
             </button>
             <button onClick={() => setExtraTime((e) => e + 1)}>+</button>
           </div>
-          {quarter}
         </div>
-      </PartidoStyled>
+      </ChronoStyles>
+      <ChangesStyles>
+        <h2>Titulares</h2>
+        <div className='players_list'>
+          {titulares.map((titular) => (
+            <p
+              className={jugadorSaliente === titular ? 'selected' : ''}
+              onClick={() => setJugadorSaliente(titular)}
+            >
+              {titular.nombre}
+            </p>
+          ))}
+        </div>
+
+        <h2>Suplentes</h2>
+        <div className='players_list'>
+          {suplentes.map((suplente) => (
+            <p
+              className={jugadorEntrante === suplente ? 'selected' : ''}
+              onClick={() => setJugadorEntrante(suplente)}
+            >
+              {suplente.nombre}
+            </p>
+          ))}
+        </div>
+
+        <button onClick={cambio}>Change</button>
+      </ChangesStyles>
     </Layout>
   );
 };
