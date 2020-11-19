@@ -99,7 +99,7 @@ const PlayStyles = styled.div`
   color: #fff;
 
   select {
-    width: 20rem;
+    width: 25rem;
     border-radius: 10px;
     overflow: hidden;
     font-size: 2rem;
@@ -149,6 +149,7 @@ export const PartidoScreen = () => {
   const [suplentes, setSuplentes] = useState([]);
   const [jugadorEntrante, setJugadorEntrante] = useState(undefined);
   const [jugadorSaliente, setJugadorSaliente] = useState(undefined);
+  const [alternativa, setAlternativa] = useState(false);
   const { match } = useSelector((state) => state.match);
   const { plays, loading, success } = useSelector((state) => state.play);
   const dispatch = useDispatch();
@@ -283,6 +284,36 @@ export const PartidoScreen = () => {
               </option>
             ))}
           </select>
+          <label>
+            Alternativa
+            <input
+              type='checkbox'
+              name='alternativa'
+              checked={alternativa}
+              onChange={() => setAlternativa((e) => !e)}
+            />
+          </label>
+          <h2>Tirador</h2>
+          <select disabled={!alternativa}>
+            {titulares.map((titular, index) => (
+              <option value={titular.id} key={titular.id}>
+                {positions[index]}: {titular.nombre} {titular.apellido}
+              </option>
+            ))}
+          </select>
+          <h2>Asistente</h2>
+          <select disabled={!alternativa}>
+            {titulares.map((titular, index) => (
+              <option value={titular.id} key={titular.id}>
+                {positions[index]}: {titular.nombre} {titular.apellido}
+              </option>
+            ))}
+          </select>
+          <div>
+            <button>Doble</button>
+            <button>Triple</button>
+            <button>Fallo</button>
+          </div>
         </PlayStyles>
       )}
     </Layout>
