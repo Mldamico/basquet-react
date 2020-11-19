@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Layout } from '../../components/Layout';
 import styled from 'styled-components';
 import Countdown, { zeroPad } from 'react-countdown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Unknown from '../../assets/unknown.jpg';
+import { getPlays } from '../../store/actions/playActions';
 const ChronoStyles = styled.div`
   display: flex;
   flex-direction: row;
@@ -85,6 +86,32 @@ const ChangesStyles = styled.div`
   }
 `;
 
+const PlayStyles = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--red);
+  margin: 10rem auto;
+  width: 80%;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  color: #fff;
+
+  select {
+    width: 20rem;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 2rem;
+    margin: 0 auto;
+    display: block;
+    text-align-last: center;
+  }
+  option {
+    text-align: center;
+  }
+`;
+
 const ChronometterStyles = styled.div`
   display: flex;
   margin-top: 2rem;
@@ -123,12 +150,16 @@ export const PartidoScreen = () => {
   const [jugadorEntrante, setJugadorEntrante] = useState(undefined);
   const [jugadorSaliente, setJugadorSaliente] = useState(undefined);
   const { match } = useSelector((state) => state.match);
+  const { plays, loading, success } = useSelector((state) => state.play);
+  const dispatch = useDispatch();
 
   const jugadoresCitados = match.jugadoresCitados;
   useEffect(() => {
     setTitulares(jugadoresCitados.slice(0, 5));
     setSuplentes(jugadoresCitados.slice(5));
-  }, [jugadoresCitados]);
+    dispatch(getPlays());
+    console.log(loading);
+  }, [jugadoresCitados, dispatch]);
   const startHandler = () => {
     // console.log(buttonEl.current);
 
@@ -240,6 +271,20 @@ export const PartidoScreen = () => {
           ))}
         </div>
       </ChangesStyles>
+      {loading ? (
+        <p>Cargando</p>
+      ) : (
+        <PlayStyles>
+          <h2>Jugadas</h2>
+          <select>
+            {plays.map((play) => (
+              <option value={play.id} key={play.id}>
+                {play.nombreDeLaJugada}
+              </option>
+            ))}
+          </select>
+        </PlayStyles>
+      )}
     </Layout>
   );
 };
