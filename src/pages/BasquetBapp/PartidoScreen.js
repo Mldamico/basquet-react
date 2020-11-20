@@ -5,6 +5,7 @@ import Countdown, { zeroPad } from 'react-countdown';
 import { useDispatch, useSelector } from 'react-redux';
 import Unknown from '../../assets/unknown.jpg';
 import { getPlays } from '../../store/actions/playActions';
+import { registerPlay } from '../../store/actions/matchActions';
 const ChronoStyles = styled.div`
   display: flex;
   flex-direction: row;
@@ -110,6 +111,25 @@ const PlayStyles = styled.div`
   option {
     text-align: center;
   }
+  input {
+    width: 10rem;
+    border-radius: 10px;
+    text-align-last: center;
+    border: 0.5rem;
+  }
+  .checkbox {
+    margin-top: 2rem;
+    height: 25px;
+    width: 25px;
+    background-color: transparent;
+  }
+  button {
+    outline: none;
+    background-color: var(--yellow);
+    border: 1px solid #fff;
+    border-radius: 10px;
+    margin: 1rem;
+  }
 `;
 
 const ChronometterStyles = styled.div`
@@ -135,10 +155,10 @@ const renderer = ({ minutes, seconds, completed }) => {
 
 const positions = {
   0: 'BA',
-  1: 'ES',
-  2: 'AL',
-  3: 'P',
-  4: 'AP',
+  1: 'AL',
+  2: 'ES',
+  3: 'AP',
+  4: 'P',
 };
 
 export const PartidoScreen = () => {
@@ -150,6 +170,10 @@ export const PartidoScreen = () => {
   const [jugadorEntrante, setJugadorEntrante] = useState(undefined);
   const [jugadorSaliente, setJugadorSaliente] = useState(undefined);
   const [alternativa, setAlternativa] = useState(false);
+  const [valorAlternativa, setValorAlternativa] = useState(2);
+  const [tiradorAlternativa, setTiradorAlternativa] = useState(undefined);
+  const [asistenteAlternativa, setAsistenteAlternativa] = useState(undefined);
+  const [jugadaSeleccionada, setJugadaSeleccionada] = useState(undefined);
   const { match } = useSelector((state) => state.match);
   const { plays, loading, success } = useSelector((state) => state.play);
   const dispatch = useDispatch();
@@ -159,7 +183,7 @@ export const PartidoScreen = () => {
     setTitulares(jugadoresCitados.slice(0, 5));
     setSuplentes(jugadoresCitados.slice(5));
     dispatch(getPlays());
-    console.log(loading);
+    console.log(match);
   }, [jugadoresCitados, dispatch]);
   const startHandler = () => {
     // console.log(buttonEl.current);
@@ -194,6 +218,35 @@ export const PartidoScreen = () => {
     });
     setJugadorEntrante(undefined);
     setJugadorSaliente(undefined);
+  };
+
+  const scoreHandler = () => {
+    if (!alternativa) {
+      console.log(jugadaSeleccionada);
+      const jugadaActual = plays.find(
+        (jugada) => jugada.id === Number(jugadaSeleccionada)
+      );
+      console.log(jugadaActual);
+      const positionTirador = Object.keys(positions).find((key) => {
+        return positions[key] === jugadaActual.posicionTirador;
+      });
+      const positionAsistente = Object.keys(positions).find((key) => {
+        return positions[key] === jugadaActual.posicionAsistente;
+      });
+      const play = {
+        valorPunto: jugadaActual.valorDelPuntoPorDefecto,
+        idJugadorAsistente: titulares[positionAsistente].id,
+        idJugadorTirador: titulares[positionTirador].id,
+        idBase: titulares[0],
+        idEscolta: titulares[2],
+        idAlero: titulares[1],
+        idPivot: titulares[4],
+        idAlaPivot: titulares[3],
+        idPartido: match.id,
+        cuarto: quarter,
+      };
+      // dispatch(registerPlay(play));
+    }
   };
 
   return (
@@ -277,7 +330,10 @@ export const PartidoScreen = () => {
       ) : (
         <PlayStyles>
           <h2>Jugadas</h2>
-          <select>
+          <select onChange={(e) => setJugadaSeleccionada(e.target.value)}>
+            <option selected disabled>
+              Seleccione una jugada
+            </option>
             {plays.map((play) => (
               <option value={play.id} key={play.id}>
                 {play.nombreDeLaJugada}
@@ -291,10 +347,17 @@ export const PartidoScreen = () => {
               name='alternativa'
               checked={alternativa}
               onChange={() => setAlternativa((e) => !e)}
+              className='checkbox'
             />
           </label>
           <h2>Tirador</h2>
-          <select disabled={!alternativa}>
+          <select
+            disabled={!alternativa}
+            onChange={(e) => setTiradorAlternativa(e.target.value)}
+          >
+            <option selected disabled>
+              Seleccione un tirador
+            </option>
             {titulares.map((titular, index) => (
               <option value={titular.id} key={titular.id}>
                 {positions[index]}: {titular.nombre} {titular.apellido}
@@ -302,17 +365,32 @@ export const PartidoScreen = () => {
             ))}
           </select>
           <h2>Asistente</h2>
-          <select disabled={!alternativa}>
+          <select
+            disabled={!alternativa}
+            onChange={(e) => setAsistenteAlternativa(e.target.value)}
+          >
+            <option selected disabled>
+              Seleccione un asistente
+            </option>
             {titulares.map((titular, index) => (
               <option value={titular.id} key={titular.id}>
                 {positions[index]}: {titular.nombre} {titular.apellido}
               </option>
             ))}
           </select>
+          <h2>Valor tanto</h2>
+          <input
+            disabled={!alternativa}
+            type='number'
+            value={valorAlternativa}
+            onChange={(e) => setValorAlternativa(e.target.value)}
+            max='3'
+            min='0'
+          />
           <div>
-            <button>Doble</button>
-            <button>Triple</button>
-            <button>Fallo</button>
+            <button onClick={scoreHandler}>Convirtio</button>
+            <button>Erro</button>
+            <button>Limpiar</button>
           </div>
         </PlayStyles>
       )}
