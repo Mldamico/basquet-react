@@ -233,10 +233,11 @@ export const PartidoScreen = () => {
       const positionAsistente = Object.keys(positions).find((key) => {
         return positions[key] === jugadaActual.posicionAsistente;
       });
+      const tiempo = `${buttonEl.current.state.timeDelta.minutes}:${buttonEl.current.state.timeDelta.seconds}`;
       const play = {
         valorPunto: jugadaActual.valorDelPuntoPorDefecto,
-        idJugadorAsistente: titulares[positionAsistente].id,
-        idJugadorTirador: titulares[positionTirador].id,
+        idJugadorAsistente: titulares[positionAsistente],
+        idJugadorAnotador: titulares[positionTirador],
         idBase: titulares[0],
         idEscolta: titulares[2],
         idAlero: titulares[1],
@@ -244,8 +245,11 @@ export const PartidoScreen = () => {
         idAlaPivot: titulares[3],
         idPartido: match.id,
         cuarto: quarter,
+        idJugada: jugadaSeleccionada,
+        tiempo,
       };
-      // dispatch(registerPlay(play));
+      console.log(play);
+      dispatch(registerPlay(play));
     }
   };
 

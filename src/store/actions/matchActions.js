@@ -55,7 +55,7 @@ export const endMatch = (id, tanteadorEquipo, tanteadorRival) => async (
 export const registerPlay = (play) => async (dispatch) => {
   try {
     dispatch({ type: MATCH_LOADING });
-    await axios.put(`http://localhost:9001/jugada/`, play);
+    await axios.post(`http://localhost:9001/registrarJugada`, play);
 
     dispatch({ type: MATCH_REGISTER_PLAY });
   } catch (error) {
