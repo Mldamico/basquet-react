@@ -129,6 +129,9 @@ const PlayStyles = styled.div`
     border: 1px solid #fff;
     border-radius: 10px;
     margin: 1rem;
+    &:disabled {
+      background-color: #000;
+    }
   }
 `;
 
@@ -174,6 +177,7 @@ export const PartidoScreen = () => {
   const [tiradorAlternativa, setTiradorAlternativa] = useState(undefined);
   const [asistenteAlternativa, setAsistenteAlternativa] = useState(undefined);
   const [jugadaSeleccionada, setJugadaSeleccionada] = useState(undefined);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const { match } = useSelector((state) => state.match);
   const { plays, loading, success } = useSelector((state) => state.play);
   const dispatch = useDispatch();
@@ -185,6 +189,30 @@ export const PartidoScreen = () => {
     dispatch(getPlays());
     console.log(match);
   }, [jugadoresCitados, dispatch]);
+
+  useEffect(() => {
+    if (alternativa) {
+      if (
+        asistenteAlternativa !== undefined &&
+        tiradorAlternativa !== undefined &&
+        jugadaSeleccionada
+      ) {
+        setButtonDisabled(false);
+      }
+      if (tiradorAlternativa === asistenteAlternativa) {
+        setButtonDisabled(true);
+      }
+    } else {
+      if (jugadaSeleccionada) {
+        setButtonDisabled(false);
+      }
+    }
+  }, [
+    jugadaSeleccionada,
+    alternativa,
+    asistenteAlternativa,
+    tiradorAlternativa,
+  ]);
   const startHandler = () => {
     // console.log(buttonEl.current);
 
@@ -419,7 +447,9 @@ export const PartidoScreen = () => {
             min='0'
           />
           <div>
-            <button onClick={scoreHandler}>Convirtio</button>
+            <button onClick={scoreHandler} disabled={buttonDisabled}>
+              Convirtio
+            </button>
             <button>Erro</button>
             <button>Limpiar</button>
           </div>
