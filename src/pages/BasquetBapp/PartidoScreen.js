@@ -12,7 +12,7 @@ const ChronoStyles = styled.div`
   justify-content: center;
   align-items: center;
   background-color: var(--red);
-  margin: 10rem auto;
+  margin: 10rem auto 0;
   width: 80%;
   border-radius: 10px;
   border: 1px solid #fff;
@@ -48,8 +48,8 @@ const ChronoStyles = styled.div`
 
 const ChangesStyles = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-evenly;
   align-items: center;
   background-color: var(--red);
   margin: 10rem auto;
@@ -64,12 +64,13 @@ const ChangesStyles = styled.div`
 
   .players_list {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #fff;
     border-radius: 10px;
     overflow: hidden;
+    margin-bottom: 1rem;
     p {
       margin: 0;
       margin-left: 1rem;
@@ -78,8 +79,9 @@ const ChangesStyles = styled.div`
 
   .player {
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 3rem;
   }
 
   button:disabled {
@@ -90,7 +92,7 @@ const ChangesStyles = styled.div`
 const PlayStyles = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: var(--red);
   margin: 10rem auto;
@@ -117,11 +119,63 @@ const PlayStyles = styled.div`
     text-align-last: center;
     border: 0.5rem;
   }
-  .checkbox {
-    margin-top: 2rem;
-    height: 25px;
-    width: 25px;
-    background-color: transparent;
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: '';
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  input:checked + .slider {
+    background-color: var(--yellow);
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px var(--yellow);
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
   }
   button {
     outline: none;
@@ -333,128 +387,141 @@ export const PartidoScreen = () => {
           </div>
         </div>
       </ChronoStyles>
-      <ChangesStyles>
-        <h2>Titulares</h2>
-        <div className='players_list'>
-          {titulares.map((titular, index) => (
-            <div
-              key={titular.id}
-              className={
-                jugadorSaliente === titular ? 'player selected' : 'player'
-              }
-              onClick={() => setJugadorSaliente(titular)}
-            >
-              <img
-                src={titular.urlFoto ? titular.urlFoto : Unknown}
-                alt={titular.nombre}
-                style={{ width: 50 }}
-              />
-              <div>
-                <p>{positions[index]}</p>
-                <p>{titular.nombre}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <button
-          onClick={cambio}
-          style={{ marginTop: '2rem' }}
-          disabled={!jugadorEntrante || !jugadorSaliente}
-        >
-          <i className='fas fa-sync' style={{ fontSize: '5rem' }}></i>
-        </button>
-        <h2>Suplentes</h2>
-        <div className='players_list'>
-          {suplentes.map((suplente) => (
-            <div
-              key={suplente.id}
-              className={
-                jugadorEntrante === suplente ? 'player selected' : 'player'
-              }
-              onClick={() => setJugadorEntrante(suplente)}
-            >
-              <img
-                src={suplente.urlFoto ? suplente.urlFoto : Unknown}
-                alt={suplente.nombre}
-                style={{ width: 50 }}
-              />
-              <p>{suplente.nombre}</p>
-            </div>
-          ))}
-        </div>
-      </ChangesStyles>
-      {loading ? (
-        <p>Cargando</p>
-      ) : (
-        <PlayStyles>
-          <h2>Jugadas</h2>
-          <select onChange={(e) => setJugadaSeleccionada(e.target.value)}>
-            <option selected disabled>
-              Seleccione una jugada
-            </option>
-            {plays.map((play) => (
-              <option value={play.id} key={play.id}>
-                {play.nombreDeLaJugada}
-              </option>
-            ))}
-          </select>
-          <label>
-            Alternativa
-            <input
-              type='checkbox'
-              name='alternativa'
-              checked={alternativa}
-              onChange={() => setAlternativa((e) => !e)}
-              className='checkbox'
-            />
-          </label>
-          <h2>Tirador</h2>
-          <select
-            disabled={!alternativa}
-            onChange={(e) => setTiradorAlternativa(e.target.value)}
-          >
-            <option selected disabled>
-              Seleccione un tirador
-            </option>
-            {titulares.map((titular, index) => (
-              <option value={titular.id} key={titular.id}>
-                {positions[index]}: {titular.nombre} {titular.apellido}
-              </option>
-            ))}
-          </select>
-          <h2>Asistente</h2>
-          <select
-            disabled={!alternativa}
-            onChange={(e) => setAsistenteAlternativa(e.target.value)}
-          >
-            <option selected disabled>
-              Seleccione un asistente
-            </option>
-            {titulares.map((titular, index) => (
-              <option value={titular.id} key={titular.id}>
-                {positions[index]}: {titular.nombre} {titular.apellido}
-              </option>
-            ))}
-          </select>
-          <h2>Valor tanto</h2>
-          <input
-            disabled={!alternativa}
-            type='number'
-            value={valorAlternativa}
-            onChange={(e) => setValorAlternativa(e.target.value)}
-            max='3'
-            min='0'
-          />
+      <div
+        style={{
+          display: 'flex',
+          gap: '15rem',
+          width: '90%',
+          margin: '0 auto',
+        }}
+      >
+        <ChangesStyles>
           <div>
-            <button onClick={scoreHandler} disabled={buttonDisabled}>
-              Convirtio
-            </button>
-            <button>Erro</button>
-            <button>Limpiar</button>
+            <h2>Titulares</h2>
+            <div className='players_list'>
+              {titulares.map((titular, index) => (
+                <div
+                  key={titular.id}
+                  className={
+                    jugadorSaliente === titular ? 'player selected' : 'player'
+                  }
+                  onClick={() => setJugadorSaliente(titular)}
+                >
+                  <img
+                    src={titular.urlFoto ? titular.urlFoto : Unknown}
+                    alt={titular.nombre}
+                    style={{ width: 50 }}
+                  />
+                  <div>
+                    <p>{positions[index]}</p>
+                    <p>{titular.nombre}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </PlayStyles>
-      )}
+
+          <button
+            onClick={cambio}
+            style={{ marginTop: '2rem' }}
+            disabled={!jugadorEntrante || !jugadorSaliente}
+          >
+            <i className='fas fa-sync' style={{ fontSize: '5rem' }}></i>
+          </button>
+          <div>
+            <h2>Suplentes</h2>
+            <div className='players_list'>
+              {suplentes.map((suplente) => (
+                <div
+                  key={suplente.id}
+                  className={
+                    jugadorEntrante === suplente ? 'player selected' : 'player'
+                  }
+                  onClick={() => setJugadorEntrante(suplente)}
+                >
+                  <img
+                    src={suplente.urlFoto ? suplente.urlFoto : Unknown}
+                    alt={suplente.nombre}
+                    style={{ width: 50 }}
+                  />
+                  <p>{suplente.nombre}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ChangesStyles>
+        {loading ? (
+          <p>Cargando</p>
+        ) : (
+          <PlayStyles>
+            <h2>Jugadas</h2>
+            <select onChange={(e) => setJugadaSeleccionada(e.target.value)}>
+              <option selected disabled>
+                Seleccione una jugada
+              </option>
+              {plays.map((play) => (
+                <option value={play.id} key={play.id}>
+                  {play.nombreDeLaJugada}
+                </option>
+              ))}
+            </select>
+            <h2>Alternativa</h2>
+            <label className='switch'>
+              <input
+                type='checkbox'
+                name='alternativa'
+                checked={alternativa}
+                onChange={() => setAlternativa((e) => !e)}
+              />
+              <span className='slider round'></span>
+            </label>
+            <h2>Tirador</h2>
+            <select
+              disabled={!alternativa}
+              onChange={(e) => setTiradorAlternativa(e.target.value)}
+            >
+              <option selected disabled>
+                Seleccione un tirador
+              </option>
+              {titulares.map((titular, index) => (
+                <option value={titular.id} key={titular.id}>
+                  {positions[index]}: {titular.nombre} {titular.apellido}
+                </option>
+              ))}
+            </select>
+            <h2>Asistente</h2>
+            <select
+              disabled={!alternativa}
+              onChange={(e) => setAsistenteAlternativa(e.target.value)}
+            >
+              <option selected disabled>
+                Seleccione un asistente
+              </option>
+              {titulares.map((titular, index) => (
+                <option value={titular.id} key={titular.id}>
+                  {positions[index]}: {titular.nombre} {titular.apellido}
+                </option>
+              ))}
+            </select>
+            <h2>Valor tanto</h2>
+            <input
+              disabled={!alternativa}
+              type='number'
+              value={valorAlternativa}
+              onChange={(e) => setValorAlternativa(e.target.value)}
+              max='3'
+              min='0'
+            />
+            <div>
+              <button onClick={scoreHandler} disabled={buttonDisabled}>
+                Convirtio
+              </button>
+              <button>Erro</button>
+              <button>Limpiar</button>
+            </div>
+          </PlayStyles>
+        )}
+      </div>
     </Layout>
   );
 };
