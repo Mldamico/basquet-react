@@ -221,11 +221,13 @@ export const PartidoScreen = () => {
   };
 
   const scoreHandler = () => {
+    const jugadaActual = plays.find(
+      (jugada) => jugada.id === Number(jugadaSeleccionada)
+    );
+    const tiempo = `${buttonEl.current.state.timeDelta.minutes}:${buttonEl.current.state.timeDelta.seconds}`;
     if (!alternativa) {
       console.log(jugadaSeleccionada);
-      const jugadaActual = plays.find(
-        (jugada) => jugada.id === Number(jugadaSeleccionada)
-      );
+
       console.log(jugadaActual);
       const positionTirador = Object.keys(positions).find((key) => {
         return positions[key] === jugadaActual.posicionTirador;
@@ -233,11 +235,36 @@ export const PartidoScreen = () => {
       const positionAsistente = Object.keys(positions).find((key) => {
         return positions[key] === jugadaActual.posicionAsistente;
       });
-      const tiempo = `${buttonEl.current.state.timeDelta.minutes}:${buttonEl.current.state.timeDelta.seconds}`;
+
       const play = {
         valorPunto: jugadaActual.valorDelPuntoPorDefecto,
         idJugadorAsistente: titulares[positionAsistente],
         idJugadorAnotador: titulares[positionTirador],
+        idBase: titulares[0],
+        idEscolta: titulares[2],
+        idAlero: titulares[1],
+        idPivot: titulares[4],
+        idAlaPivot: titulares[3],
+        idPartido: match.id,
+        cuarto: quarter,
+        idJugada: jugadaSeleccionada,
+        tiempo,
+      };
+      console.log(play);
+      dispatch(registerPlay(play));
+    } else {
+      console.log(valorAlternativa);
+
+      const asistente = titulares.find(
+        (titular) => titular.id === Number(asistenteAlternativa)
+      );
+      const tirador = titulares.find(
+        (titular) => titular.id === Number(tiradorAlternativa)
+      );
+      const play = {
+        valorPunto: valorAlternativa,
+        idJugadorAsistente: asistente,
+        idJugadorAnotador: tirador,
         idBase: titulares[0],
         idEscolta: titulares[2],
         idAlero: titulares[1],
